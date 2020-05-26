@@ -4,5 +4,9 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+body {
+    background: #f5f5f5;
+    font-family: "Nunito", sans-serif;
+}
+
+@import "./layout/header";

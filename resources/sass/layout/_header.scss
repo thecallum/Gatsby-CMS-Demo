@@ -1,0 +1,40 @@
+.header {
+    width: 100%;
+    height: 56px;
+    background: #3f51b5;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &-logo {
+        > a {
+            color: #fff;
+        }
+    }
+
+    &-navigation {
+
+        &-ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        &-li {
+            margin: 0 0 0 15px;
+            padding: 0;
+            display: block;
+
+            > a {
+                color: #fff;
+            }
+        }
+    }
+}
+
+@media (min-width: 600px) {
+    .header {
+        height: 64px;
+    }
+}

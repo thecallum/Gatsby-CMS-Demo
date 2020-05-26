@@ -7,31 +7,22 @@ import {
     Link
   } from "react-router-dom";
 
-
 import Home from './pages/home';
 import About from './pages/about';
 import Users from './pages/users';
 
-export default () => (
-    <Router>
-        <header>
-            <div>App</div>
+import Layout from './layout/layout'
 
-            <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/about/">About</Link></li>
-                <li><Link to="/users/">Users</Link></li>
-            </ul>
-        </header>
-
-
-        <Switch>
-          <Route path="/about" component={About} />
-
-          <Route path="/users" component={Users} />
-
-          <Route path="/" component={Home} />
-        </Switch>
-
-    </Router>
-)
+export default () => {
+    return (
+        <Router>
+            <Layout>
+                <Switch>
+                    <Route path="/about" component={About} />
+                    <Route path="/users" component={Users} />
+                    <Route path="/" component={Home} />
+                </Switch>
+            </Layout>
+        </Router>
+    )
+}
