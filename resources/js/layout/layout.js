@@ -5,13 +5,12 @@ import Header from './header'
 export default ({ children }) => {
 
   return (
-    <div>
+    <div className="layout">
       <Header />
 
-      <main>
-        <div className="container" style={{marginTop: '30px'}}>
-          { children }
-        </div>
+      <main className="layout-main">
+  
+          <div className="layout-page">{ children }</div>
       </main>
     </div>
   )
