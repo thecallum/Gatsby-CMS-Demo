@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING } from '../actionTypes'
+import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from '../actionTypes'
 
 
 const initialState = {
@@ -30,6 +30,13 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 loading: true
+            }
+        }
+
+        case AUTH_LOAD_TOKEN: {
+            return {
+                ...state,
+                token: action.payload.token
             }
         }
 

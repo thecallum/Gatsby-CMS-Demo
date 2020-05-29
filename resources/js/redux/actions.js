@@ -1,4 +1,4 @@
-import { ADD, AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING } from './actionTypes'
+import { ADD, AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from './actionTypes'
 
 export const add = (value) => ({
     type: ADD,
@@ -40,6 +40,7 @@ export const authLogin = (email, password) => {
             .then(res => {
                 if (res.hasOwnProperty('access_token')) {
                     dispatch(authSuccess(res.access_token))
+                    localStorage.setItem("token", res.access_token);
                 } else {
                     dispatch(authError(res.error))
                 }
@@ -50,3 +51,10 @@ export const authLogin = (email, password) => {
             })
     }
 }
+
+export const authLoadToken = token => ({
+    type: AUTH_LOAD_TOKEN,
+    payload: {
+        token
+    }
+})
