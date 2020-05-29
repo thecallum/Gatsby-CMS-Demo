@@ -1,7 +1,7 @@
-import { ADD } from './actionTypes'
+import { ADD } from '../actionTypes'
 
 const initialState = {
-    count: 0,
+    count: 2,
 }
 
 export default (state = initialState, action) => {

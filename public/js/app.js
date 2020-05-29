@@ -32795,6 +32795,38 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/redux-thunk/es/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/redux-thunk/es/index.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+/* harmony default export */ __webpack_exports__["default"] = (thunk);
+
+/***/ }),
+
 /***/ "./node_modules/redux/es/redux.js":
 /*!****************************************!*\
   !*** ./node_modules/redux/es/redux.js ***!
@@ -35131,7 +35163,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Counter = function Counter(_ref) {
-  var count = _ref.count,
+  var state = _ref.state,
       addOne = _ref.addOne;
 
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(1),
@@ -35146,7 +35178,7 @@ var Counter = function Counter(_ref) {
       padding: 15,
       color: 'white'
     }
-  }, count || '0'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  }, state.count || '0'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "number",
     name: "",
     id: "",
@@ -35161,9 +35193,12 @@ var Counter = function Counter(_ref) {
   }, amount >= 0 ? 'Add' : 'Subtract', " ", Math.abs(amount)));
 };
 
-var mapStateToProps = function mapStateToProps(state) {
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var main = _ref2.main;
   return {
-    count: state.count
+    state: {
+      count: main.count
+    }
   };
 };
 
@@ -35302,6 +35337,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _redux_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/actions */ "./resources/js/redux/actions.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -35321,58 +35358,32 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
-/* harmony default export */ __webpack_exports__["default"] = (function () {
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
+
+
+var Login = function Login(_ref) {
+  var state = _ref.state,
+      authLogin = _ref.authLogin;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
     email: '',
     password: ''
   }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      fields = _useState4[0],
-      setFields = _useState4[1];
-
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(null),
-      _useState6 = _slicedToArray(_useState5, 2),
-      error = _useState6[0],
-      setError = _useState6[1];
+      _useState2 = _slicedToArray(_useState, 2),
+      fields = _useState2[0],
+      setFields = _useState2[1];
 
   var login = function login(e) {
     e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-    setError(null);
-    fetch('http://localhost:8000/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(fields),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(function (res) {
-      return res.json();
-    }).then(function (res) {
-      if (res.hasOwnProperty('error')) {
-        setError(res.error);
-      } else {// success
-      }
-    })["catch"](function (err) {
-      console.log({
-        err: err
-      });
-      setError('Oops! Something went wrong.');
-    })["finally"](function () {
-      setLoading(false);
-    });
+    if (state.loading) return;
+    authLogin(fields.email, fields.password);
   };
 
   var inputChange = function inputChange(e) {
     setFields(_objectSpread(_objectSpread({}, fields), {}, _defineProperty({}, e.target.name, e.target.value)));
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Login"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Login"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Token: ", state.token), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Error: ", state.error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Loading: ", state.loading), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
     onSubmit: login
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-group"
@@ -35396,13 +35407,34 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     id: "password_input",
     value: fields.password,
     onChange: inputChange
-  })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })), state.error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "alert alert-danger"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, error))), loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Loading..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, state.error))), state.loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Loading..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "submit",
     className: "btn btn-primary"
   }, "Login")));
-});
+};
+
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var auth = _ref2.auth;
+  return {
+    state: {
+      token: auth.token,
+      error: auth.error,
+      loading: auth.loading
+    }
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    authLogin: function authLogin(email, password) {
+      dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_2__["authLogin"])(email, password));
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Login));
 
 /***/ }),
 
@@ -35428,13 +35460,19 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************!*\
   !*** ./resources/js/redux/actionTypes.js ***!
   \*******************************************/
-/*! exports provided: ADD */
+/*! exports provided: ADD, AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD", function() { return ADD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTH_SUCCESS", function() { return AUTH_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTH_ERROR", function() { return AUTH_ERROR; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AUTH_LOADING", function() { return AUTH_LOADING; });
 var ADD = 'ADD';
+var AUTH_SUCCESS = "AUTH_SUCCESS";
+var AUTH_ERROR = "AUTH_ERROR";
+var AUTH_LOADING = "AUTH_LOADING";
 
 /***/ }),
 
@@ -35442,12 +35480,13 @@ var ADD = 'ADD';
 /*!***************************************!*\
   !*** ./resources/js/redux/actions.js ***!
   \***************************************/
-/*! exports provided: add */
+/*! exports provided: add, authLogin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "authLogin", function() { return authLogin; });
 /* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionTypes */ "./resources/js/redux/actionTypes.js");
 
 var add = function add(value) {
@@ -35459,18 +35498,71 @@ var add = function add(value) {
   };
 };
 
+var authLoading = function authLoading() {
+  return {
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["AUTH_LOADING"]
+  };
+};
+
+var authSuccess = function authSuccess(token) {
+  return {
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["AUTH_SUCCESS"],
+    payload: {
+      token: token
+    }
+  };
+};
+
+var authError = function authError(errorMessage) {
+  return {
+    type: _actionTypes__WEBPACK_IMPORTED_MODULE_0__["AUTH_ERROR"],
+    payload: {
+      error: errorMessage
+    }
+  };
+};
+
+var authLogin = function authLogin(email, password) {
+  return function (dispatch) {
+    dispatch(authLoading());
+    fetch('http://localhost:8000/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: email,
+        password: password
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      if (res.hasOwnProperty('access_token')) {
+        dispatch(authSuccess(res.access_token));
+      } else {
+        dispatch(authError(res.error));
+      }
+    })["catch"](function (err) {
+      console.log({
+        err: err
+      });
+      dispatch(authError('Oops! Something went wrong.'));
+    });
+  };
+};
+
 /***/ }),
 
-/***/ "./resources/js/redux/reducer.js":
-/*!***************************************!*\
-  !*** ./resources/js/redux/reducer.js ***!
-  \***************************************/
+/***/ "./resources/js/redux/reducers/auth.js":
+/*!*********************************************!*\
+  !*** ./resources/js/redux/reducers/auth.js ***!
+  \*********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actionTypes */ "./resources/js/redux/actionTypes.js");
+/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./resources/js/redux/actionTypes.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -35479,7 +35571,65 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var initialState = {
-  count: 0
+  token: null,
+  error: null,
+  loading: false
+};
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["AUTH_SUCCESS"]:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          token: action.payload.token,
+          error: null,
+          loading: false
+        });
+      }
+
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["AUTH_ERROR"]:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          error: action.payload.error,
+          loading: false
+        });
+      }
+
+    case _actionTypes__WEBPACK_IMPORTED_MODULE_0__["AUTH_LOADING"]:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          loading: true
+        });
+      }
+
+    default:
+      return state;
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/redux/reducers/main.js":
+/*!*********************************************!*\
+  !*** ./resources/js/redux/reducers/main.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actionTypes */ "./resources/js/redux/actionTypes.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var initialState = {
+  count: 2
 };
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -35500,6 +35650,28 @@ var initialState = {
 
 /***/ }),
 
+/***/ "./resources/js/redux/reducers/rootReducer.js":
+/*!****************************************************!*\
+  !*** ./resources/js/redux/reducers/rootReducer.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main */ "./resources/js/redux/reducers/main.js");
+/* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth */ "./resources/js/redux/reducers/auth.js");
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
+  main: _main__WEBPACK_IMPORTED_MODULE_1__["default"],
+  auth: _auth__WEBPACK_IMPORTED_MODULE_2__["default"]
+}));
+
+/***/ }),
+
 /***/ "./resources/js/redux/store.js":
 /*!*************************************!*\
   !*** ./resources/js/redux/store.js ***!
@@ -35510,10 +35682,12 @@ var initialState = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./reducer */ "./resources/js/redux/reducer.js");
+/* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
+/* harmony import */ var _reducers_rootReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./reducers/rootReducer */ "./resources/js/redux/reducers/rootReducer.js");
 
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducer__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(_reducers_rootReducer__WEBPACK_IMPORTED_MODULE_2__["default"], Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_1__["default"])));
 
 /***/ }),
 

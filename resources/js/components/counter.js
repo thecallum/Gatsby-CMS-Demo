@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { add } from '../redux/actions'
 
-const Counter = ({ count, addOne }) => {
+const Counter = ({ state, addOne }) => {
     const [amount, setAmount] = useState(1)
 
     return (
@@ -16,7 +16,7 @@ const Counter = ({ count, addOne }) => {
                 padding: 15,
                 color: 'white'
 
-            }}>{ count || '0' }</p>
+            }}>{ state.count || '0' }</p>
 
             <input type="number" name="" id="" placeholder={amount} onChange={(e) => setAmount(parseInt(e.target.value))} />
 
@@ -25,8 +25,10 @@ const Counter = ({ count, addOne }) => {
     )
 }
 
-const mapStateToProps = state => ({
-    count: state.count
+const mapStateToProps = ({ main }) => ({
+    state: {
+        count: main.count
+    }
 })
 
 

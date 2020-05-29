@@ -1,44 +1,20 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 
-export default () => {
-    const [loading, setLoading] = useState(false);
+import { authLogin } from '../redux/actions'
+
+const Login = ({ state, authLogin }) => {
     const [fields, setFields] = useState({
         email: '',
         password: ''
     });
-    const [error, setError] = useState(null)
 
     const login = (e) => {
         e.preventDefault();
 
-        if (loading) return;
+        if (state.loading) return;
 
-        setLoading(true)
-        setError(null)
-
-        fetch('http://localhost:8000/api/auth/login', {
-            method: 'POST',
-            body: JSON.stringify(fields),
-            headers: {
-                'Content-Type': 'application/json'
-              },
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res.hasOwnProperty('error')) {
-                    setError(res.error)
-                } else {
-                    // success
-                }
-            })
-            .catch(err => {
-                console.log({err})
-                setError('Oops! Something went wrong.')
-            })
-            .finally(() => {
-                setLoading(false)
-            })
-
+        authLogin(fields.email, fields.password)
     }
 
     const inputChange = e => {
@@ -53,6 +29,10 @@ export default () => {
         <div>
             <h1>Login</h1>
 
+            <p>Token: { state.token }</p>
+            <p>Error: { state.error }</p>
+            <p>Loading: { state.loading }</p>
+
             <form onSubmit={login}>
 
                 <div className="form-group">
@@ -65,18 +45,34 @@ export default () => {
                     <input type="password" className="form-control" name="password" id="password_input" value={fields.password} onChange={inputChange}/>
                 </div>
 
-                {error && (
+                {state.error && (
                     <div className="alert alert-danger">
                     <ul>
-                        <li>{ error }</li>
+                        <li>{ state.error }</li>
                     </ul>
                 </div>
                 )}
 
-                {loading && <p>Loading...</p>}
+                {state.loading && <p>Loading...</p>}
                 <button type="submit" className="btn btn-primary">Login</button>
             </form>
-
         </div>
     )
 }
+
+const mapStateToProps = ({ auth }) => ({
+    state: {
+        token: auth.token,
+        error: auth.error,
+        loading: auth.loading
+    }
+    
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    authLogin: (email, password) => {
+        dispatch(authLogin(email, password));
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
