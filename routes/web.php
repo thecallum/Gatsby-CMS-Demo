@@ -23,5 +23,18 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::view("/{any}", "react")
+// Route::group([
+
+//     'middleware' => 'api',
+//     'prefix' => 'auth'
+
+// ], function ($router) {
+
+    Route::view("/{any}", "react")
     ->where('any', '.*');
+
+   
+    
+// });
+
+

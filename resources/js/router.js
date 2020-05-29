@@ -11,6 +11,8 @@ import Home from './pages/home';
 import About from './pages/about';
 import Users from './pages/users';
 
+import Login from './pages/login';
+
 import Layout from './layout/layout'
 
 export default () => {
@@ -20,6 +22,9 @@ export default () => {
                 <Switch>
                     <Route path="/about" component={About} />
                     <Route path="/users" component={Users} />
+
+                    <Route path="/login" component={Login} />
+
                     <Route path="/" component={Home} />
                 </Switch>
             </Layout>
