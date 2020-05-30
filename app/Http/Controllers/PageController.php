@@ -27,7 +27,33 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // name, slug, content
+        $page = new Page;
+
+        $data = [
+            "name" => $request->input('name'),
+            "slug" => $request->input('slug'),
+            "content" => $request->input('content'),
+        ];
+
+        $rules = [
+            'name' => 'required|min:3|max:255',
+            'slug' => 'required|min:3|max:255',
+            'content' => 'required|min:3|max:255',
+        ];
+
+        $validator = \Validator::make($data, $rules);
+
+        if ($validator->fails())
+            return response()->json(['errors'=>$validator->errors()]);
+
+        $page->name = $request->input('name');
+        $page->slug = $request->input('slug');
+        $page->content = $request->input('content');
+
+        $page->save();
+
+        return $page;
     }
 
     /**

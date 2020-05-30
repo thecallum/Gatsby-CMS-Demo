@@ -26,6 +26,8 @@ export default () => {
         <div>
             <h1>Pages</h1>
 
+            <Link className="btn btn-primary" to="/pages/create/" style={{margin: '15px 0'}}>Create</Link>
+
 
             <table className="table">
                 <thead>
