@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import {
     BrowserRouter,
@@ -20,29 +20,35 @@ import ProtectedRoute from './protectedRoute'
 
 
 const Router = ({ loadToken }) => {
+    const [ loading, setLoading ] = useState(true)
+
     useEffect(() => {
-        // alert('first load')
         const token = localStorage.getItem("token");
-
-        console.log('token', token)
-
         loadToken(token)
-
+        setLoading(false)
       }, []);
 
     return (
-        <BrowserRouter>
-            <Layout>
-                <Switch>
-                    <ProtectedRoute path="/about" component={About} />
-                    <ProtectedRoute path="/users" component={Users} />
-
-                    <Route path="/login" component={Login} />
-
-                    <Route path="/" component={Home} />
-                </Switch>
-            </Layout>
-        </BrowserRouter>
+       <>
+        {
+            loading ? (
+                <div></div>
+            ) : (
+                <BrowserRouter>
+                <Layout>
+                    <Switch>
+                        <ProtectedRoute path="/about" component={About} />
+                        <ProtectedRoute path="/users" component={Users} />
+    
+                        <Route path="/login" component={Login} />
+    
+                        <ProtectedRoute path="/" component={Home} />
+                    </Switch>
+                </Layout>
+            </BrowserRouter>
+            )
+        }
+       </>
     )
 }
 

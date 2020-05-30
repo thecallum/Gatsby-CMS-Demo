@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom' 
 
 import { authLogin } from '../redux/actions'
 
@@ -9,8 +10,12 @@ const Login = ({ state, authLogin }) => {
         password: ''
     });
 
+    const [active, setActive] = useState(false)
+
     const login = (e) => {
         e.preventDefault();
+
+        setActive(true)
 
         if (state.loading) return;
 
@@ -27,6 +32,10 @@ const Login = ({ state, authLogin }) => {
 
     return (
         <div>
+            { active && state.token !== null && (
+                <Redirect to="/" />
+            )}
+
             <h1>Login</h1>
 
             <p>Token: { state.token }</p>
