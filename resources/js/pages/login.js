@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom' 
 
-import { authLogin } from '../redux/actions'
+import { authLogin } from '../redux/actions/auth'
 
 const Login = ({ state, authLogin }) => {
     const [fields, setFields] = useState({

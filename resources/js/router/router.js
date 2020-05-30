@@ -6,7 +6,7 @@ import {
     Route
   } from "react-router-dom";
 
-import { authLoadToken } from '../redux/actions'
+import { authLoadToken } from '../redux/actions/auth'
 
 import Home from '../pages/home';
 import About from '../pages/about';

@@ -1,11 +1,4 @@
-import { ADD, AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from './actionTypes'
-
-export const add = (value) => ({
-    type: ADD,
-    payload: {
-        value
-    }
-})
+import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from '../actionTypes/auth'
 
 const authLoading = () => ({
     type: AUTH_LOADING,

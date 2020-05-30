@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { connect } from 'react-redux'
 
-import { add } from '../redux/actions'
+import { add } from '../redux/actions/main'
 
 const Counter = ({ state, addOne }) => {
     const [amount, setAmount] = useState(1)

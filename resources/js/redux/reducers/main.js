@@ -1,4 +1,4 @@
-import { ADD } from '../actionTypes'
+import { ADD } from '../actionTypes/main'
 
 const initialState = {
     count: 2,

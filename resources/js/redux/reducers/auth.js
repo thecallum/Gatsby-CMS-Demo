@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from '../actionTypes'
+import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from '../actionTypes/auth'
 
 
 const initialState = {
