@@ -45,3 +45,5 @@ Route::group([
 
 Route::Resource("page", "PageController");
 
+
+Route::get('models/page', "ModelController@page");
