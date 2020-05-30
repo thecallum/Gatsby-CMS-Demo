@@ -13,8 +13,7 @@ const Header = ({ state }) => {
                     { state.token !== null ? (
                         <>
                             <li className="header-navigation-li"><Link to="/">Home</Link></li>
-                            <li className="header-navigation-li"><Link to="/about/">About</Link></li>
-                            <li className="header-navigation-li"><Link to="/users/">Users</Link></li>
+                            <li className="header-navigation-li"><Link to="/pages/">Pages</Link></li>
                             <li className="header-navigation-li"><Link to="/logout/">Logout</Link></li>
                         </>
                     ) : (

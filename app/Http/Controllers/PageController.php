@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Page;
 use Illuminate\Http\Request;
+use App\Page;
 
 class PageController extends Controller
 {
@@ -14,23 +14,9 @@ class PageController extends Controller
      */
     public function index()
     {
+        $pages = Page::all();
 
-        return true;
-        // $pages = Page::all();
-
-        // return view("page.index", [
-        //     "pages" => $pages
-        // ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view("page.create");
+        return $pages;
     }
 
     /**
@@ -41,66 +27,71 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'name' => 'required|unique:App\Page|min:3|max:255',
-            'slug' => 'required|unique:App\Page|min:3|max:255',
-            'content' => 'required|min:3|max:255',
-        ]);
-
-        $page = new Page;
-
-        $page->name = $validator["name"];
-        $page->slug = $validator["slug"];
-        $page->content = $validator["content"];
-
-        $page->save();
-
-        return redirect("page/");
-
-        // return view("page.create");
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Page  $page
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Page $page)
+    public function show($id)
     {
-        //
-    }
+        $page = Page::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Page  $page
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Page $page)
-    {
-        //
+        if ($page == null) return abort(404);
+
+        return $page;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Page  $page
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Page $page)
+    public function update(Request $request, $id)
     {
-        //
+        // name, slug, content
+        $page = Page::find($id);
+        if ($page == null) return abort(404);
+
+        $data = [
+            "name" => $request->input('name'),
+            "slug" => $request->input('slug'),
+            "content" => $request->input('content'),
+        ];
+
+        $rules = [
+            'name' => 'required|min:3|max:255',
+            'slug' => 'required|min:3|max:255',
+            'content' => 'required|min:3|max:255',
+        ];
+
+        $validator = \Validator::make($data, $rules);
+
+        if ($validator->fails())
+            return response()->json(['errors'=>$validator->errors()]);
+
+        $page->name = $request->input('name');
+        $page->slug = $request->input('slug');
+        $page->content = $request->input('content');
+
+        $page->save();
+
+        return $page;
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Page  $page
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Page $page)
+    public function destroy($id)
     {
         //
     }

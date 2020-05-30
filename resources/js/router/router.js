@@ -9,8 +9,9 @@ import {
 import { authLoadToken } from '../redux/actions/auth'
 
 import Home from '../pages/home';
-import About from '../pages/about';
-import Users from '../pages/users';
+// import Pages from '../pages/pages';
+import PageRoutes from './PageRoutes'
+import PageNotFound from '../pages/404'
 
 import Login from '../pages/login';
 import Logout from '../pages/logout';
@@ -38,13 +39,15 @@ const Router = ({ loadToken }) => {
                 <BrowserRouter>
                 <Layout>
                     <Switch>
-                        <ProtectedRoute path="/about" component={About} />
-                        <ProtectedRoute path="/users" component={Users} />
+                        <ProtectedRoute path="/pages/" component={PageRoutes} />
     
-                        <Route path="/login" component={Login} />
-                        <Route path="/logout" component={Logout} />
+                        <Route path="/login/" component={Login} />
+                        <Route path="/logout/" component={Logout} />
     
-                        <ProtectedRoute path="/" component={Home} />
+                        <ProtectedRoute path="/" component={Home} exact />
+
+                        <Route component={PageNotFound}/>
+
                     </Switch>
                 </Layout>
             </BrowserRouter>

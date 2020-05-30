@@ -43,4 +43,5 @@ Route::group([
 
 });
 
+Route::Resource("page", "PageController");
 
