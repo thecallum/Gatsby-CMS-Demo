@@ -15,6 +15,7 @@ const Header = ({ state }) => {
                             <li className="header-navigation-li"><Link to="/">Home</Link></li>
                             <li className="header-navigation-li"><Link to="/about/">About</Link></li>
                             <li className="header-navigation-li"><Link to="/users/">Users</Link></li>
+                            <li className="header-navigation-li"><Link to="/logout/">Logout</Link></li>
                         </>
                     ) : (
                         <li className="header-navigation-li"><Link to="/login/">Login</Link></li>
@@ -31,5 +32,6 @@ const mapStateToProps = ({ auth }) => ({
         token: auth.token
     }
 })
+
 
 export default connect(mapStateToProps)(Header);

@@ -13,6 +13,7 @@ import About from '../pages/about';
 import Users from '../pages/users';
 
 import Login from '../pages/login';
+import Logout from '../pages/logout';
 
 import Layout from '../layout/layout'
 
@@ -41,6 +42,7 @@ const Router = ({ loadToken }) => {
                         <ProtectedRoute path="/users" component={Users} />
     
                         <Route path="/login" component={Login} />
+                        <Route path="/logout" component={Logout} />
     
                         <ProtectedRoute path="/" component={Home} />
                     </Switch>

@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN } from '../actionTypes/auth'
+import { AUTH_SUCCESS, AUTH_ERROR, AUTH_LOADING, AUTH_LOAD_TOKEN, AUTH_LOGOUT } from '../actionTypes/auth'
 
 const authLoading = () => ({
     type: AUTH_LOADING,
@@ -25,9 +25,7 @@ export const authLogin = (email, password) => {
         fetch('http://localhost:8000/api/auth/login', {
             method: 'POST',
             body: JSON.stringify({ email, password }),
-            headers: {
-                'Content-Type': 'application/json'
-              },
+            headers: { 'Content-Type': 'application/json' },
         })
             .then(res => res.json())
             .then(res => {
@@ -51,3 +49,21 @@ export const authLoadToken = token => ({
         token
     }
 })
+
+const authRemoveToken = () => ({
+    type: AUTH_LOGOUT
+})
+
+export const authLogout = () => {
+    return (dispatch) => {
+        
+        fetch('http://localhost:8000/api/auth/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .finally(() => {
+                dispatch(authRemoveToken())
+            })
+
+    }
+}
