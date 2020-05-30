@@ -9,7 +9,7 @@ const Error = ({error}) => (
     </>
 )
 
-export default ({ match }) => {
+export default ({ match, history }) => {
     const id = match.params.id;
 
     const [loading, setLoading] = useState(false)
@@ -44,7 +44,6 @@ export default ({ match }) => {
         .then(res => res.json())
         .then(res => {
             if (res.hasOwnProperty('errors')) {
-                // alert('error')
                 console.log(res.errors)
                 setErrors(res.errors)
             } else {
@@ -66,13 +65,8 @@ export default ({ match }) => {
 
     }
 
-// console.log({props})
-
-    // console.log('ID: ' , match.params.id)
-
 
     useEffect(() => {
-    //    alert('load pages')
 
         fetch("http://localhost:8000/api/page/" + id, {
             method: 'GET',
@@ -81,9 +75,6 @@ export default ({ match }) => {
         .then(res => res.json())
         .then(res => {
             console.log({res})
-            // console.table(res, ['name', 'slug', 'content'])
-
-            // setPages(res)
 
             setPage({
                 name: res.name,
@@ -92,7 +83,34 @@ export default ({ match }) => {
             })
         })
     
-    }, []);    
+    }, []);   
+    
+    const deletePage = e => {
+        e.preventDefault();
+
+        if (loading) return;
+
+        setLoading(true);
+
+
+        fetch("http://localhost:8000/api/page/" + id, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then(res => {
+            console.log({ res })
+
+            history.push('/pages/')
+
+        })
+        .catch(err => {
+            console.log({err})
+        })
+        .finally(() => {
+            setLoading(false)
+        })
+
+    }
 
     return (
         <div>
@@ -119,7 +137,12 @@ export default ({ match }) => {
                 </div>
 
                 <button type="submit" className="btn btn-primary">Update</button>
+                
 
+            </form>
+
+            <form onSubmit={deletePage}>
+                <button type="submit" className="btn btn-danger">Delete Page</button>
             </form>
            
         </div>
