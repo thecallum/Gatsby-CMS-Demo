@@ -1,21 +1,25 @@
 import React from 'react'
-import Counter from '@components/counter'
+import Markdown from 'markdown-to-jsx';
+import components from '@components'
+import { Link } from 'gatsby'
 
 export default ({ pageContext }) => {
-    // console.log({ props })
-
     return (
         <div style={{
             margin: '60px auto',
             padding: '30px'
         }}>
+            <p><Link to='/'>Home</Link></p>
+
             <h1>{ pageContext.name }</h1>
 
-
-            <p style={{ whiteSpace: 'pre-wrap' }}>{ pageContext.content }</p>
-
-
-            <Counter />
+            <Markdown
+                options={{
+                    overrides: { ...components }
+                }}
+            >
+                { pageContext.content }
+            </Markdown>
         </div>
     )
 }
