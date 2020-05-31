@@ -11,7 +11,7 @@ export default ({ pageContext }) => {
             <h1>{ pageContext.name }</h1>
 
 
-            <p>{ pageContext.content }</p>
+            <p style={{ whiteSpace: 'pre-wrap' }}>{ pageContext.content }</p>
         </div>
     )
 }
