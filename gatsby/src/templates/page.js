@@ -1,4 +1,5 @@
 import React from 'react'
+import Counter from '@components/counter'
 
 export default ({ pageContext }) => {
     // console.log({ props })
@@ -12,6 +13,9 @@ export default ({ pageContext }) => {
 
 
             <p style={{ whiteSpace: 'pre-wrap' }}>{ pageContext.content }</p>
+
+
+            <Counter />
         </div>
     )
 }
