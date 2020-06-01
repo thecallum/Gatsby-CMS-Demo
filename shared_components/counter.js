@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
-export default () => {
-    const [count, setCount] = useState(0);
+const Counter = ({ props = {} }) => {
+    const initialValue = props.hasOwnProperty('initialValue') ? props.initialValue.value : 0;
+
+    const [count, setCount] = useState(initialValue);
 
     const add = () => setCount(count + 1);
     const subtract = () => setCount(count - 1);
@@ -18,10 +20,18 @@ export default () => {
 
             <p>Count: [{ count }]</p>
 
-            <p><button className="btn btn-primary" onClick={add}>Add</button></p>
-            <p><button className="btn btn-primary" onClick={subtract}>Subtract</button></p>
+            <p><button type='button' className="btn btn-primary" onClick={add}>Add</button></p>
+            <p><button type='button' className="btn btn-primary" onClick={subtract}>Subtract</button></p>
         </div>
     )
-
-
 }
+
+export default Counter;
+
+export const schema = {
+    name: 'Counter',
+    component: Counter,
+    props: {
+        initialValue: { label: "Initial Value", value: 10 }
+    }
+};
