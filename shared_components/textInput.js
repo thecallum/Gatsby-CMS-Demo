@@ -1,10 +1,7 @@
 import React from "react";
 
 const TextInput = ({ props = {}, updateValue, index, value }) => {
-  // const content = props.hasOwnProperty("content") ? props.content.value : "";
-
   const rows = props.hasOwnProperty("rows") ? props.rows.value : 1;
-  //   console.log({ props });
 
   return (
     <div>

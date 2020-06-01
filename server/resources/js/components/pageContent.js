@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// const TextArea = ({ props, index, updateValue }) => {
-
-//     // console.log({ props })
-//     // // const
-
-//     const update = e => {
-//         updateValue(index, 'content', e.target.value)
-//     }
-
-//     return (
-//         <textarea value={props.content.value} onChange={update}></textarea>
-//     )
-// }
-
 import ComponentWrapper from "./componentWrapper";
 
 export default ({
@@ -23,16 +9,9 @@ export default ({
     setSelectedComponent,
     components,
     focussedComponent,
-    setFocussedComponent
+    setFocussedComponent,
+    savedLayout
 }) => {
-    const addComponent = () => {
-        setState([...state, components[selectedComponent]]);
-    };
-
-    const _setSelectedComponent = e => {
-        setSelectedComponent(e.target.value);
-    };
-
     const updateValue = (index, value) => {
         setState(
             state.map((component, componentIndex) => {
@@ -51,12 +30,13 @@ export default ({
     };
 
     useEffect(() => {
-        addComponent();
+        // console.log({ savedLayout });
+        setState(savedLayout);
     }, []);
 
     return (
         <>
-            <pre> {JSON.stringify(state, null, 2)} </pre>
+            {/* <pre> {JSON.stringify(state, null, 2)} </pre> */}
             <div
                 style={{
                     margin: "30px 0",
@@ -65,20 +45,9 @@ export default ({
                 }}
             >
                 {state.map((component, index) => (
-                    <div
-                        style={
-                            {
-                                // margin: "0 0 15px",
-                                // background: "#ccc",
-                                // padding: "15px"
-                            }
-                        }
-                        key={index}
-                    >
+                    <div key={index}>
                         <div
                             onClick={e => {
-                                e.preventDefault();
-                                // console.log("click", index);
                                 setFocussedComponent(index);
                             }}
                         >
@@ -98,35 +67,6 @@ export default ({
                     </div>
                 ))}
             </div>
-            <hr />
-            <br />
-            <div className="form-group">
-                <label htmlFor="exampleFormControlSelect1">
-                    {" "}
-                    Select component{" "}
-                </label>{" "}
-                <select
-                    className="form-control"
-                    id="exampleFormControlSelect1"
-                    onChange={_setSelectedComponent}
-                >
-                    {" "}
-                    {components.map((component, index) => {
-                        return (
-                            <option key={index} value={index}>
-                                {" "}
-                                {component.name}{" "}
-                            </option>
-                        );
-                    })}{" "}
-                </select>{" "}
-            </div>
-            <button className="btn btn-secondary" onClick={addComponent}>
-                {" "}
-                Add Component{" "}
-            </button>{" "}
-            <hr />
-            <br />
         </>
     );
 };

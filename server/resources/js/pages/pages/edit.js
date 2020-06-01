@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Error from "../../components/error";
 import PageContent from "../../components/pageContent";
 
-import { schema } from "@components";
+import coms, { schema } from "@components";
 
 const components = Object.keys(schema).map(key => schema[key]);
 
@@ -23,6 +23,17 @@ export default ({ match, history }) => {
         slug: "",
         content: ""
     });
+
+    const dummyLayout = [];
+    const firstField = JSON.parse(JSON.stringify(schema.TextInput));
+    firstField.value.value = `No, no! You're a serpent; and there's no room at all the things I used to do:-- 'How doth the little--"' and she trembled till she.
+    
+
+    sdfsdfsdf`;
+    firstField.component = coms.TextInput;
+    dummyLayout.push(firstField);
+
+    // console.log({ dummyLayout });
 
     const updateProp = (componentName, propKey, value) => {
         setState(
@@ -84,27 +95,35 @@ export default ({ match, history }) => {
             });
     };
 
-    // useEffect(() => {
-    //     fetch("http://localhost:8000/api/page/" + id, {
-    //         method: "GET",
-    //         headers: { "Content-Type": "application/json" }
-    //     })
-    //         .then(res => res.json())
-    //         .then(res => {
-    //             console.log({ res });
+    const addComponent = () => {
+        setState([...state, components[selectedComponent]]);
+    };
 
-    //             setPage({
-    //                 name: res.name,
-    //                 slug: res.slug,
-    //                 content: res.content
-    //             });
-    //         });
-    // }, []);
+    const _setSelectedComponent = e => {
+        setSelectedComponent(e.target.value);
+    };
 
-    const deletePage = e => {
-        e.preventDefault();
+    useEffect(() => {
+        fetch("http://localhost:8000/api/page/" + id, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log({ res });
 
+                setPage({
+                    name: res.name,
+                    slug: res.slug,
+                    content: res.content
+                });
+            });
+    }, []);
+
+    const deletePage = () => {
         if (loading) return;
+
+        if (!confirm("are you sure you want to delete this page?")) return;
 
         setLoading(true);
 
@@ -128,19 +147,24 @@ export default ({ match, history }) => {
     return (
         <div
             style={{
-                display: "flex"
+                display: "flex",
+                position: "relative"
             }}
         >
             <div
                 className="body"
                 style={{
                     flexGrow: 1,
-                    width: "1px"
+                    width: "1px",
+                    padding: 15
                 }}
             >
-                <h1>Edit Page - {page.name}</h1>
+                <h1>{page.name}</h1>
+                <br />
 
-                <form onSubmit={updatePage}>
+                <div style={{ padding: 15, background: "#eee" }}>
+                    <h1>Properties</h1>
+                    <hr />
                     <div className="form-group">
                         <label htmlFor="name_input">Name</label>
                         <Error error={errors.name} />
@@ -166,80 +190,133 @@ export default ({ match, history }) => {
                             onChange={inputChange}
                         />
                     </div>
+                </div>
 
-                    <PageContent
-                        state={state}
-                        setState={setState}
-                        selectedComponent={selectedComponent}
-                        setSelectedComponent={setSelectedComponent}
-                        components={components}
-                        focussedComponent={focussedComponent}
-                        setFocussedComponent={setFocussedComponent}
-                    />
-
-                    <button type="submit" className="btn btn-primary">
-                        Update
-                    </button>
-                </form>
-
-                <form onSubmit={deletePage}>
-                    <button type="submit" className="btn btn-danger">
-                        Delete Page
-                    </button>
-                </form>
+                <PageContent
+                    state={state}
+                    setState={setState}
+                    selectedComponent={selectedComponent}
+                    setSelectedComponent={setSelectedComponent}
+                    components={components}
+                    focussedComponent={focussedComponent}
+                    setFocussedComponent={setFocussedComponent}
+                    savedLayout={dummyLayout}
+                />
             </div>
             <div
                 className="sidebar"
                 style={{
                     width: "300px",
-                    background: "mediumspringgreen",
-                    padding: 15
+                    display: "flex",
+                    flexDirection: "column"
                 }}
             >
-                {state.length > 0 && (
-                    <>
-                        <h2>{state[focussedComponent].name}</h2>
-                        <hr />
-                        <p>Lorem ipsum, dolor sit amet consectetur.</p>
-                        <br />
-
-                        <h3>Props</h3>
-                        <hr />
-
-                        {Object.keys(state[focussedComponent].props).map(
-                            (key, index) => {
-                                const prop =
-                                    state[focussedComponent].props[key];
+                <div
+                    style={{
+                        background: "hsl(29.6,100%,49%)",
+                        padding: 15,
+                        marginBottom: 15
+                    }}
+                >
+                    <div style={{ display: "flex" }}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={updatePage}
+                        >
+                            Update
+                        </button>
+                        <button
+                            onClick={deletePage}
+                            className="btn btn-danger"
+                            style={{ marginLeft: 15 }}
+                        >
+                            Delete Page
+                        </button>
+                    </div>
+                    <hr />
+                    <div className="form-group">
+                        <label htmlFor="exampleFormControlSelect1">
+                            {" "}
+                            Select component{" "}
+                        </label>{" "}
+                        <select
+                            className="form-control"
+                            id="exampleFormControlSelect1"
+                            onChange={_setSelectedComponent}
+                        >
+                            {" "}
+                            {components.map((component, index) => {
                                 return (
-                                    <div className="form-group" key={index}>
-                                        <label>{prop.label}</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            value={prop.value}
-                                            onChange={e => {
-                                                console.log(
-                                                    "update prop",
-                                                    state[focussedComponent]
-                                                        .name,
-                                                    key,
-                                                    e.target.value,
-                                                    state
-                                                );
-                                                updateProp(
-                                                    state[focussedComponent]
-                                                        .name,
-                                                    key,
-                                                    e.target.value
-                                                );
-                                            }}
-                                        />
-                                    </div>
+                                    <option key={index} value={index}>
+                                        {" "}
+                                        {component.name}{" "}
+                                    </option>
                                 );
-                            }
-                        )}
-                    </>
-                )}
+                            })}{" "}
+                        </select>{" "}
+                    </div>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={addComponent}
+                    >
+                        {" "}
+                        Add Component{" "}
+                    </button>{" "}
+                </div>
+
+                <div
+                    style={{
+                        background: "mediumspringgreen",
+                        padding: 15,
+                        height: 1,
+                        flexGrow: 1
+                    }}
+                >
+                    {state.length > 0 && (
+                        <>
+                            <h2>{state[focussedComponent].name}</h2>
+                            <hr />
+                            <p>Lorem ipsum, dolor sit amet consectetur.</p>
+                            <br />
+
+                            <h3>Props</h3>
+                            <hr />
+
+                            {Object.keys(state[focussedComponent].props).map(
+                                (key, index) => {
+                                    const prop =
+                                        state[focussedComponent].props[key];
+                                    return (
+                                        <div className="form-group" key={index}>
+                                            <label>{prop.label}</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={prop.value}
+                                                onChange={e => {
+                                                    console.log(
+                                                        "update prop",
+                                                        state[focussedComponent]
+                                                            .name,
+                                                        key,
+                                                        e.target.value,
+                                                        state
+                                                    );
+                                                    updateProp(
+                                                        state[focussedComponent]
+                                                            .name,
+                                                        key,
+                                                        e.target.value
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                }
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
