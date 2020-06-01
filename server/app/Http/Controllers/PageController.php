@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Page;
+use Illuminate\Support\Facades\Http;
 
 class PageController extends Controller
 {
@@ -107,6 +108,8 @@ class PageController extends Controller
         $page->jsonContent = $request->input('jsonContent');
 
         $page->save();
+
+        Http::post('https://api.netlify.com/build_hooks/5ed5437602b1493e68b58cbc');
 
         return $page;
 
