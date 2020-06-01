@@ -11,6 +11,7 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
+    "gatsby-plugin-netlify-cache",
     {
       resolve: `cms`,
       options: {
