@@ -1,8 +1,9 @@
 import React from "react";
 
-const TextInput = ({ props = {}, updateValue, index }) => {
-  const content = props.hasOwnProperty("content") ? props.content.value : "";
+const TextInput = ({ props = {}, updateValue, index, value }) => {
+  // const content = props.hasOwnProperty("content") ? props.content.value : "";
 
+  const rows = props.hasOwnProperty("rows") ? props.rows.value : 1;
   //   console.log({ props });
 
   return (
@@ -12,10 +13,10 @@ const TextInput = ({ props = {}, updateValue, index }) => {
         <textarea
           className="form-control"
           id="content_input"
-          rows="8"
+          rows={rows}
           name="content"
-          value={content}
-          onChange={(e) => updateValue(index, "content", e.target.value)}
+          value={value}
+          onChange={(e) => updateValue(index, e.target.value)}
         ></textarea>
       </div>
     </div>
@@ -27,10 +28,13 @@ export default TextInput;
 export const schema = {
   name: "Text Input",
   component: TextInput,
+  value: {
+    value: "Default value",
+  },
   props: {
-    content: {
-      label: "Content",
-      value: "Some text content",
+    rows: {
+      label: "Rows",
+      value: 8,
     },
   },
 };

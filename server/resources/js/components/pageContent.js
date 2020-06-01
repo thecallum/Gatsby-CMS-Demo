@@ -33,18 +33,14 @@ export default ({
         setSelectedComponent(e.target.value);
     };
 
-    const updateValue = (index, propKey, value) => {
+    const updateValue = (index, value) => {
         setState(
             state.map((component, componentIndex) => {
                 if (componentIndex === index) {
                     return {
                         ...component,
-                        props: {
-                            ...component.props,
-                            [propKey]: {
-                                ...component.props[propKey],
-                                value
-                            }
+                        value: {
+                            value
                         }
                     };
                 } else {
@@ -92,6 +88,11 @@ export default ({
                                 updateValue={updateValue}
                                 index={index}
                                 focussed={focussedComponent == index}
+                                value={
+                                    component.hasOwnProperty("value")
+                                        ? component.value.value
+                                        : null
+                                }
                             />
                         </div>
                     </div>

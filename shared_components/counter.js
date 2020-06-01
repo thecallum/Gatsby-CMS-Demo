@@ -1,37 +1,52 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 const Counter = ({ props = {} }) => {
-    const initialValue = props.hasOwnProperty('initialValue') ? props.initialValue.value : 0;
+  const initialValue = props.hasOwnProperty("initialValue")
+    ? props.initialValue.value
+    : 0;
 
-    const [count, setCount] = useState(initialValue);
+  const interval = props.hasOwnProperty("interval") ? props.interval.value : 0;
 
-    const add = () => setCount(count + 1);
-    const subtract = () => setCount(count - 1);
+  const [count, setCount] = useState(initialValue);
 
-    return (
-        <div style={{ 
-            background: 'hsl(200, 50%, 50%)',
-            padding: 30,
-            color: '#fff'
-         }}>
-            <h2>Counter</h2>
+  const add = () => setCount(count + parseInt(interval));
+  const subtract = () => setCount(count - parseInt(interval));
 
-            <hr/>
+  return (
+    <div
+      style={{
+        background: "hsl(200, 50%, 50%)",
+        padding: 30,
+        color: "#fff",
+      }}
+    >
+      <h2>Counter | {interval}</h2>
 
-            <p>Count: [{ count }]</p>
+      <hr />
 
-            <p><button type='button' className="btn btn-primary" onClick={add}>Add</button></p>
-            <p><button type='button' className="btn btn-primary" onClick={subtract}>Subtract</button></p>
-        </div>
-    )
-}
+      <p>Count: [{count}]</p>
+
+      <p>
+        <button type="button" className="btn btn-primary" onClick={add}>
+          Add
+        </button>
+      </p>
+      <p>
+        <button type="button" className="btn btn-primary" onClick={subtract}>
+          Subtract
+        </button>
+      </p>
+    </div>
+  );
+};
 
 export default Counter;
 
 export const schema = {
-    name: 'Counter',
-    component: Counter,
-    props: {
-        initialValue: { label: "Initial Value", value: 10 }
-    }
+  name: "Counter",
+  component: Counter,
+  props: {
+    initialValue: { label: "Initial Value", value: 10 },
+    interval: { label: "Interval", value: 1 },
+  },
 };
