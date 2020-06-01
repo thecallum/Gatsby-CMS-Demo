@@ -19,7 +19,6 @@ export default Image;
 
 export const schema = {
   name: "Image",
-  component: Image,
   props: {
     imageURL: {
       label: "Path to image",

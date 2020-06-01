@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import SharedComponents, { schema } from "@components";
 
 import ComponentWrapper from "./componentWrapper";
 
@@ -29,10 +30,11 @@ export default ({
         );
     };
 
-    useEffect(() => {
-        // console.log({ savedLayout });
-        setState(savedLayout);
-    }, []);
+    // useEffect(() => {
+    //     console.log({ savedLayout });
+
+    //     setState(savedLayout);
+    // }, []);
 
     return (
         <>
@@ -53,7 +55,7 @@ export default ({
                         >
                             <ComponentWrapper
                                 props={component.props}
-                                component={component.component}
+                                component={SharedComponents[component.name]}
                                 updateValue={updateValue}
                                 index={index}
                                 focussed={focussedComponent == index}

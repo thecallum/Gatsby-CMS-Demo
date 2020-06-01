@@ -87,13 +87,14 @@ class PageController extends Controller
         $data = [
             "name" => $request->input('name'),
             "slug" => $request->input('slug'),
-            "content" => $request->input('content'),
+            "jsonContent" => $request->input('jsonContent'),
         ];
 
         $rules = [
             'name' => 'required|min:3|max:255',
             'slug' => 'required|min:3|max:255',
-            'content' => 'required|min:3|max:255',
+            // 'content' => 'required|min:3|max:255',
+            'jsonContent' => 'required|json'
         ];
 
         $validator = \Validator::make($data, $rules);
@@ -103,7 +104,7 @@ class PageController extends Controller
 
         $page->name = $request->input('name');
         $page->slug = $request->input('slug');
-        $page->content = $request->input('content');
+        $page->jsonContent = $request->input('jsonContent');
 
         $page->save();
 

@@ -21,6 +21,8 @@ export default ({
                     index={index}
                     value={value}
                 />
+
+                {/* <p>{Component}</p> */}
             </div>
         </div>
     );

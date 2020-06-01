@@ -23,8 +23,7 @@ const TextInput = ({ props = {}, updateValue, index, value }) => {
 export default TextInput;
 
 export const schema = {
-  name: "Text Input",
-  component: TextInput,
+  name: "TextInput",
   value: {
     value: "Default value",
   },

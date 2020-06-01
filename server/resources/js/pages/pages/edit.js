@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Error from "../../components/error";
 import PageContent from "../../components/pageContent";
-import coms, { schema } from "@components";
+import SharedComponents, { schema } from "@components";
 
 import { useToasts, ToastProvider } from "react-toast-notifications";
 const components = Object.keys(schema).map(key => schema[key]);
@@ -21,19 +21,9 @@ export default ({ match, history }) => {
     const [page, setPage] = useState({
         name: "",
         slug: "",
-        content: ""
+        jsonContent: []
     });
     const { addToast } = useToasts();
-    const dummyLayout = [];
-    const firstField = JSON.parse(JSON.stringify(schema.TextInput));
-    firstField.value.value = `No, no! You're a serpent; and there's no room at all the things I used to do:-- 'How doth the little--"' and she trembled till she.
-    
-
-    sdfsdfsdf`;
-    firstField.component = coms.TextInput;
-    dummyLayout.push(firstField);
-
-    // console.log({ dummyLayout });
 
     const updateProp = (componentName, propKey, value) => {
         setState(
@@ -72,7 +62,10 @@ export default ({ match, history }) => {
 
         fetch("http://localhost:8000/api/page/" + id, {
             method: "PATCH",
-            body: JSON.stringify(page),
+            body: JSON.stringify({
+                ...page,
+                jsonContent: JSON.stringify(state)
+            }),
             headers: { "Content-Type": "application/json" }
         })
             .then(res => res.json())
@@ -87,9 +80,12 @@ export default ({ match, history }) => {
                     });
                 } else {
                     console.log({ res });
-                    console.table(res, ["name", "slug", "content"]);
+                    // console.table(res, ["name", "slug", "content"]);
                     setErrors({});
-                    setPage(res);
+                    setPage({
+                        ...res,
+                        PageContent: JSON.parse(res.jsonContent)
+                    });
 
                     ////
                     addToast("Page was updated", {
@@ -121,13 +117,18 @@ export default ({ match, history }) => {
         })
             .then(res => res.json())
             .then(res => {
-                console.log({ res });
+                const jsonContent =
+                    res.jsonContent === null ? [] : JSON.parse(res.jsonContent);
+
+                console.log("content", jsonContent);
 
                 setPage({
                     name: res.name,
                     slug: res.slug,
-                    content: res.content
+                    jsonContent
                 });
+
+                setState(jsonContent);
             });
     }, []);
 
@@ -211,7 +212,6 @@ export default ({ match, history }) => {
                     components={components}
                     focussedComponent={focussedComponent}
                     setFocussedComponent={setFocussedComponent}
-                    savedLayout={dummyLayout}
                 />
             </div>
             <div

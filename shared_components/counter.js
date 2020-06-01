@@ -44,7 +44,6 @@ export default Counter;
 
 export const schema = {
   name: "Counter",
-  component: Counter,
   props: {
     initialValue: { label: "Initial Value", value: 10 },
     interval: { label: "Interval", value: 1 },
