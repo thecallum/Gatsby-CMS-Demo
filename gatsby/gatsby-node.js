@@ -1,5 +1,7 @@
 const path = require("path")
 
+console.log("ENV", process.env.CMS_URL)
+
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 

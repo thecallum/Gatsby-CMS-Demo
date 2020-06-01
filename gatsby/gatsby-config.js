@@ -1,4 +1,8 @@
-const path = require('path')
+const path = require("path")
+
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 
 module.exports = {
   siteMetadata: {
@@ -10,8 +14,10 @@ module.exports = {
     {
       resolve: `cms`,
       options: {
-        url: 'http://localhost:8000/api/models/page'
-      }
+        url: !!process.env.CMS_URL
+          ? process.env.CMS_URL
+          : "http://localhost:8000/api/models/page",
+      },
     },
     `gatsby-plugin-react-helmet`,
     {
@@ -39,13 +45,13 @@ module.exports = {
       resolve: `gatsby-plugin-alias-imports`,
       options: {
         alias: {
-          "react": path.resolve(__dirname, "../node_modules/react"),
+          react: path.resolve(__dirname, "../node_modules/react"),
           "react-dom": path.resolve(__dirname, "../node_modules/react-dom"),
           "@components": path.resolve(__dirname, "../shared_components/"),
         },
-        extensions: []
-      }
-    }
+        extensions: [],
+      },
+    },
 
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
