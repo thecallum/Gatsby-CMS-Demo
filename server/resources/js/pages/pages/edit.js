@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Error from "../../components/error";
 import PageContent from "../../components/pageContent";
-
 import coms, { schema } from "@components";
 
+import { useToasts, ToastProvider } from "react-toast-notifications";
 const components = Object.keys(schema).map(key => schema[key]);
 
 export default ({ match, history }) => {
@@ -23,7 +23,7 @@ export default ({ match, history }) => {
         slug: "",
         content: ""
     });
-
+    const { addToast } = useToasts();
     const dummyLayout = [];
     const firstField = JSON.parse(JSON.stringify(schema.TextInput));
     firstField.value.value = `No, no! You're a serpent; and there's no room at all the things I used to do:-- 'How doth the little--"' and she trembled till she.
@@ -80,11 +80,22 @@ export default ({ match, history }) => {
                 if (res.hasOwnProperty("errors")) {
                     console.log(res.errors);
                     setErrors(res.errors);
+
+                    addToast("Page could not be updated", {
+                        appearance: "error",
+                        autoDismiss: true
+                    });
                 } else {
                     console.log({ res });
                     console.table(res, ["name", "slug", "content"]);
                     setErrors({});
                     setPage(res);
+
+                    ////
+                    addToast("Page was updated", {
+                        appearance: "success",
+                        autoDismiss: true
+                    });
                 }
             })
             .catch(err => {
@@ -294,14 +305,14 @@ export default ({ match, history }) => {
                                                 className="form-control"
                                                 value={prop.value}
                                                 onChange={e => {
-                                                    console.log(
-                                                        "update prop",
-                                                        state[focussedComponent]
-                                                            .name,
-                                                        key,
-                                                        e.target.value,
-                                                        state
-                                                    );
+                                                    // console.log(
+                                                    //     "update prop",
+                                                    //     state[focussedComponent]
+                                                    //         .name,
+                                                    //     key,
+                                                    //     e.target.value,
+                                                    //     state
+                                                    // );
                                                     updateProp(
                                                         state[focussedComponent]
                                                             .name,
