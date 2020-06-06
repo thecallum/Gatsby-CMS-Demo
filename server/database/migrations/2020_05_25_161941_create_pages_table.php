@@ -19,7 +19,6 @@ class CreatePagesTable extends Migration
 
             $table->string("name", 255);
             $table->string("slug", 255);
-            $table->text("content");
         });
     }
 
