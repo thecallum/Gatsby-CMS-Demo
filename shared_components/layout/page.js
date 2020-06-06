@@ -1,5 +1,6 @@
 import React from "react";
 import components from "@components";
+import "../../gatsby/src/scss/main.scss";
 
 // import Layout from "../../gatsby/src/components/layout";
 // import Layout from '@layout/page'
@@ -9,11 +10,9 @@ const PageContent = ({ jsonContent }) => (
   <>
     {jsonContent.map((component, index) => {
       const Component = components[component.name];
-      const value = component.hasOwnProperty("value")
-        ? component.value.value
-        : null;
+      const state = component.hasOwnProperty("state") ? component.state : null;
 
-      return <Component key={index} props={component.props} value={value} />;
+      return <Component key={index} props={component.props} state={state} />;
     })}
   </>
 );
@@ -23,7 +22,7 @@ export default ({ pageContext }) => {
 
   return (
     <Layout hideHeader={true}>
-      <PageContent jsonContent={pageContext.jsonContent} />
+      <PageContent jsonContent={JSON.parse(pageContext.jsonContent)} />
     </Layout>
   );
 };
