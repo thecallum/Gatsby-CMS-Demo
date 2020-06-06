@@ -1,12 +1,13 @@
-const mix = require('laravel-mix');
-require('laravel-mix-alias');
+const mix = require("laravel-mix");
+require("laravel-mix-alias");
 
-const path = require('path');
+const path = require("path");
 
 mix.alias({
-    "react": '../node_modules/react',
-    "react-dom": '../node_modules/react-dom',
-    "@components": '../shared_components/'
+    react: "../node_modules/react",
+    "react-dom": "../node_modules/react-dom",
+    "@components": "../shared_components/components",
+    "@layout": "../shared_components/layout"
 });
 
 /*
@@ -22,10 +23,11 @@ mix.alias({
 
 // process.env.REACT_APP_SOURCE = 'SERVER';
 
-// 
+//
 
 // global.yeet = "yeet"
 
-
-mix.react('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+mix.react("resources/js/app.js", "public/js").sass(
+    "resources/sass/app.scss",
+    "public/css"
+);

@@ -1,11 +1,53 @@
+// import Layout from "../../layout/layout";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Error from "../../components/error";
 import PageContent from "../../components/pageContent";
 import SharedComponents, { schema } from "@components";
+// import Layout from "../../../../../shared_components/layout/page";
+// import Layout from "@layout/page";
+
+import Header from "../../layout/header";
+import EditPageSidebar from "../../components/editPageSidebar";
 
 import { useToasts, ToastProvider } from "react-toast-notifications";
 const components = Object.keys(schema).map(key => schema[key]);
+
+const EditLayout = ({
+    children,
+    page,
+    errors,
+    inputChange,
+    focussedComponent,
+    state,
+    updateProp,
+    updatePage,
+    deletePage,
+    setFocussedComponent
+}) => {
+    return (
+        <div className="editLayout">
+            <Header />
+
+            <main className="editLayout-main">
+                <div className="editLayout-page-container">
+                    <div className="editLayout-page">{children}</div>
+                </div>
+                <EditPageSidebar
+                    page={page}
+                    errors={errors}
+                    inputChange={inputChange}
+                    state={state}
+                    focussedComponent={focussedComponent}
+                    updateProp={updateProp}
+                    updatePage={updatePage}
+                    deletePage={deletePage}
+                    setFocussedComponent={setFocussedComponent}
+                />
+            </main>
+        </div>
+    );
+};
 
 export default ({ match, history }) => {
     const id = match.params.id;
@@ -16,7 +58,7 @@ export default ({ match, history }) => {
     const [state, setState] = useState([]);
     const [selectedComponent, setSelectedComponent] = useState(0);
 
-    const [focussedComponent, setFocussedComponent] = useState(0);
+    const [focussedComponent, setFocussedComponent] = useState(null);
 
     const [page, setPage] = useState({
         name: "",
@@ -157,178 +199,51 @@ export default ({ match, history }) => {
     };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                position: "relative"
-            }}
+        <EditLayout
+            page={page}
+            errors={errors}
+            inputChange={inputChange}
+            state={state}
+            focussedComponent={focussedComponent}
+            updateProp={updateProp}
+            updatePage={updatePage}
+            deletePage={deletePage}
+            setFocussedComponent={setFocussedComponent}
         >
-            <div
-                className="body"
-                style={{
-                    flexGrow: 1,
-                    width: "1px",
-                    padding: 15
-                }}
-            >
-                <h1>{page.name}</h1>
-                <br />
-
-                <div style={{ padding: 15, background: "#eee" }}>
-                    <h1>Properties</h1>
-                    <hr />
-                    <div className="form-group">
-                        <label htmlFor="name_input">Name</label>
-                        <Error error={errors.name} />
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="name"
-                            id="name_input"
-                            value={page.name}
-                            onChange={inputChange}
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="slug_input">Slug</label>
-                        <Error error={errors.slug} />
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="slug"
-                            id="slug_input"
-                            value={page.slug}
-                            onChange={inputChange}
-                        />
-                    </div>
-                </div>
-
-                <PageContent
-                    state={state}
-                    setState={setState}
-                    selectedComponent={selectedComponent}
-                    setSelectedComponent={setSelectedComponent}
-                    components={components}
-                    focussedComponent={focussedComponent}
-                    setFocussedComponent={setFocussedComponent}
-                />
-            </div>
-            <div
-                className="sidebar"
-                style={{
-                    width: "300px",
-                    display: "flex",
-                    flexDirection: "column"
-                }}
-            >
-                <div
-                    style={{
-                        background: "hsl(29.6,100%,49%)",
-                        padding: 15,
-                        marginBottom: 15
-                    }}
+            <PageContent
+                state={state}
+                setState={setState}
+                selectedComponent={selectedComponent}
+                setSelectedComponent={setSelectedComponent}
+                components={components}
+                focussedComponent={focussedComponent}
+                setFocussedComponent={setFocussedComponent}
+            />
+            <div className="form-group">
+                <label htmlFor="exampleFormControlSelect1">
+                    {" "}
+                    Select component{" "}
+                </label>{" "}
+                <select
+                    className="form-control"
+                    id="exampleFormControlSelect1"
+                    onChange={_setSelectedComponent}
                 >
-                    <div style={{ display: "flex" }}>
-                        <button
-                            className="btn btn-primary"
-                            onClick={updatePage}
-                        >
-                            Update
-                        </button>
-                        <button
-                            onClick={deletePage}
-                            className="btn btn-danger"
-                            style={{ marginLeft: 15 }}
-                        >
-                            Delete Page
-                        </button>
-                    </div>
-                    <hr />
-                    <div className="form-group">
-                        <label htmlFor="exampleFormControlSelect1">
-                            {" "}
-                            Select component{" "}
-                        </label>{" "}
-                        <select
-                            className="form-control"
-                            id="exampleFormControlSelect1"
-                            onChange={_setSelectedComponent}
-                        >
-                            {" "}
-                            {components.map((component, index) => {
-                                return (
-                                    <option key={index} value={index}>
-                                        {" "}
-                                        {component.name}{" "}
-                                    </option>
-                                );
-                            })}{" "}
-                        </select>{" "}
-                    </div>
-                    <button
-                        className="btn btn-secondary"
-                        onClick={addComponent}
-                    >
-                        {" "}
-                        Add Component{" "}
-                    </button>{" "}
-                </div>
-
-                <div
-                    style={{
-                        background: "mediumspringgreen",
-                        padding: 15,
-                        height: 1,
-                        flexGrow: 1
-                    }}
-                >
-                    {state.length > 0 && (
-                        <>
-                            <h2>{state[focussedComponent].name}</h2>
-                            <hr />
-                            <p>Lorem ipsum, dolor sit amet consectetur.</p>
-                            <br />
-
-                            <h3>Props</h3>
-                            <hr />
-
-                            {Object.keys(state[focussedComponent].props).map(
-                                (key, index) => {
-                                    const prop =
-                                        state[focussedComponent].props[key];
-                                    return (
-                                        <div className="form-group" key={index}>
-                                            <label>{prop.label}</label>
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                value={prop.value}
-                                                onChange={e => {
-                                                    // console.log(
-                                                    //     "update prop",
-                                                    //     state[focussedComponent]
-                                                    //         .name,
-                                                    //     key,
-                                                    //     e.target.value,
-                                                    //     state
-                                                    // );
-                                                    updateProp(
-                                                        state[focussedComponent]
-                                                            .name,
-                                                        key,
-                                                        e.target.value
-                                                    );
-                                                }}
-                                            />
-                                        </div>
-                                    );
-                                }
-                            )}
-                        </>
-                    )}
-                </div>
+                    {" "}
+                    {components.map((component, index) => {
+                        return (
+                            <option key={index} value={index}>
+                                {" "}
+                                {component.name}{" "}
+                            </option>
+                        );
+                    })}{" "}
+                </select>{" "}
             </div>
-        </div>
+            <button className="btn btn-secondary" onClick={addComponent}>
+                {" "}
+                Add Component{" "}
+            </button>{" "}
+        </EditLayout>
     );
 };

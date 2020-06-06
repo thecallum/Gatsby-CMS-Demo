@@ -18,6 +18,7 @@ const Counter = ({ props = {} }) => {
         background: "hsl(200, 50%, 50%)",
         padding: 30,
         color: "#fff",
+        margin: "30px 0",
       }}
     >
       <h2>Counter | {interval}</h2>

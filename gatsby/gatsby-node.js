@@ -31,7 +31,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
     createPage({
       path: `/pages/${page.slug}`,
-      component: path.resolve(`./src/templates/page.js`),
+      component: path.resolve(`../shared_components/layout/page.js`),
       context: { ...page, jsonContent },
     })
   })

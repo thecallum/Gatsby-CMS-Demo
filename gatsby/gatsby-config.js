@@ -11,6 +11,7 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
+    `gatsby-plugin-sass`,
     {
       resolve: "gatsby-plugin-netlify-cache",
       options: {
@@ -53,7 +54,10 @@ module.exports = {
         alias: {
           react: path.resolve(__dirname, "../node_modules/react"),
           "react-dom": path.resolve(__dirname, "../node_modules/react-dom"),
-          "@components": path.resolve(__dirname, "../shared_components/"),
+          "@components": path.resolve(
+            __dirname,
+            "../shared_components/components/"
+          ),
         },
         extensions: [],
       },

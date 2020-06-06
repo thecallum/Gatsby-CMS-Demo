@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SharedComponents, { schema } from "@components";
+import OutsideClickHandler from "react-outside-click-handler";
 
 import ComponentWrapper from "./componentWrapper";
 
@@ -13,62 +14,61 @@ export default ({
     setFocussedComponent,
     savedLayout
 }) => {
-    const updateValue = (index, value) => {
+    const updateState = (index, key, value) => {
         setState(
             state.map((component, componentIndex) => {
-                if (componentIndex === index) {
-                    return {
-                        ...component,
-                        value: {
-                            value
-                        }
-                    };
-                } else {
-                    return component;
-                }
+                if (componentIndex !== index) return component;
+
+                return {
+                    ...component,
+                    state: {
+                        ...component.state,
+                        [key]: value
+                    }
+                };
             })
         );
     };
 
-    // useEffect(() => {
-    //     console.log({ savedLayout });
-
-    //     setState(savedLayout);
-    // }, []);
-
     return (
         <>
-            {/* <pre> {JSON.stringify(state, null, 2)} </pre> */}
-            <div
-                style={{
-                    margin: "30px 0",
-                    padding: "30px",
-                    background: "#ddd"
+            <OutsideClickHandler
+                onOutsideClick={e => {
+                    for (let i = 0; i < e.path.length; i++) {
+                        if (e.path[i].className === "editLayout-sidebar")
+                            return;
+                    }
+                    setFocussedComponent(null);
                 }}
             >
-                {state.map((component, index) => (
-                    <div key={index}>
+                {/* <pre style={{ whiteSpace: "pre-wrap" }}>
+                    {JSON.stringify(state, null, 4)}
+                </pre> */}
+
+                {state.map((component, index) => {
+                    const isFocussed = focussedComponent == index;
+                    const componentState = component.hasOwnProperty("state")
+                        ? component.state
+                        : null;
+                    const Component = SharedComponents[component.name];
+
+                    return (
                         <div
-                            onClick={e => {
-                                setFocussedComponent(index);
-                            }}
+                            key={index}
+                            onClick={() => setFocussedComponent(index)}
                         >
                             <ComponentWrapper
                                 props={component.props}
-                                component={SharedComponents[component.name]}
-                                updateValue={updateValue}
+                                component={Component}
+                                updateState={updateState}
                                 index={index}
-                                focussed={focussedComponent == index}
-                                value={
-                                    component.hasOwnProperty("value")
-                                        ? component.value.value
-                                        : null
-                                }
+                                focussed={isFocussed}
+                                state={componentState}
                             />
                         </div>
-                    </div>
-                ))}
-            </div>
+                    );
+                })}
+            </OutsideClickHandler>
         </>
     );
 };

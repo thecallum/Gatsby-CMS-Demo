@@ -3,10 +3,10 @@ import React from "react";
 export default ({
     props,
     component: Component,
-    updateValue,
+    updateState,
     index,
     focussed = false,
-    value
+    state
 }) => {
     return (
         <div>
@@ -17,12 +17,11 @@ export default ({
             >
                 <Component
                     props={props}
-                    updateValue={updateValue}
+                    updateState={updateState}
                     index={index}
-                    value={value}
+                    state={state}
+                    editContent={focussed}
                 />
-
-                {/* <p>{Component}</p> */}
             </div>
         </div>
     );

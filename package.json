@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "gatsby": "^2.22.20",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "react-textarea-autosize": "^8.0.1"
   }
 }

@@ -6,6 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: fixed;
 
     &-logo {
         > a {
@@ -14,7 +15,6 @@
     }
 
     &-navigation {
-
         &-ul {
             margin: 0;
             padding: 0;
