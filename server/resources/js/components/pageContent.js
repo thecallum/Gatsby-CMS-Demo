@@ -1,36 +1,15 @@
 import React, { useState, useEffect } from "react";
 import SharedComponents, { schema } from "@components";
 import OutsideClickHandler from "react-outside-click-handler";
+import { connect } from "react-redux";
+import {
+    setFocussedComponent,
+    showComponentSidebar
+} from "../redux/actions/page";
 
 import ComponentWrapper from "./componentWrapper";
 
-export default ({
-    state,
-    setState,
-    selectedComponent,
-    setSelectedComponent,
-    components,
-    focussedComponent,
-    setFocussedComponent,
-    savedLayout,
-    setAddingComponent
-}) => {
-    const updateState = (index, key, value) => {
-        setState(
-            state.map((component, componentIndex) => {
-                if (componentIndex !== index) return component;
-
-                return {
-                    ...component,
-                    state: {
-                        ...component.state,
-                        [key]: value
-                    }
-                };
-            })
-        );
-    };
-
+const PageContent = ({ pageState, dispatch }) => {
     return (
         <>
             <OutsideClickHandler
@@ -39,15 +18,11 @@ export default ({
                         if (e.path[i].className === "editLayout-sidebar")
                             return;
                     }
-                    setFocussedComponent(null);
+                    dispatch.setFocussedComponent(null);
                 }}
             >
-                {/* <pre style={{ whiteSpace: "pre-wrap" }}>
-                    {JSON.stringify(state, null, 4)}
-                </pre> */}
-
-                {state.map((component, index) => {
-                    const isFocussed = focussedComponent == index;
+                {pageState.jsonContent.map((component, index) => {
+                    const isFocussed = pageState.focussedComponent == index;
                     const componentState = component.hasOwnProperty("state")
                         ? component.state
                         : null;
@@ -56,12 +31,11 @@ export default ({
                     return (
                         <div
                             key={index}
-                            onClick={() => setFocussedComponent(index)}
+                            onClick={() => dispatch.setFocussedComponent(index)}
                         >
                             <ComponentWrapper
                                 props={component.props}
                                 component={Component}
-                                updateState={updateState}
                                 index={index}
                                 focussed={isFocussed}
                                 state={componentState}
@@ -77,7 +51,7 @@ export default ({
                             display: "block",
                             margin: "0 auto"
                         }}
-                        onClick={() => setAddingComponent(true)}
+                        onClick={() => dispatch.showComponentSidebar(true)}
                     >
                         Add Component
                     </button>
@@ -86,3 +60,29 @@ export default ({
         </>
     );
 };
+
+const mapStateToProps = ({ page }) => ({
+    pageState: {
+        loading: page.loading,
+        error: page.error,
+        name: page.name,
+        slug: page.slug,
+        jsonContent: page.jsonContent,
+        id: page.id,
+        focussedComponent: page.focussedComponentId,
+        showComponentSidebar: page.showComponentSidebar
+    }
+});
+
+const mapDispatchToProps = dispatch => ({
+    dispatch: {
+        setFocussedComponent: index => {
+            dispatch(setFocussedComponent(index));
+        },
+        showComponentSidebar: show => {
+            dispatch(showComponentSidebar(show));
+        }
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageContent);
