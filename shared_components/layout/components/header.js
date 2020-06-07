@@ -1,9 +1,6 @@
 import React from "react";
-// import { Link } from "gatsby";
 
-// import Link from "link";
-
-export default () => {
+export default ({ Link }) => {
   const links = [
     { name: "Home", path: "/" },
     { name: "Pages", path: "#" },
@@ -13,7 +10,9 @@ export default () => {
     <header className="header">
       <ul>
         {links.map((link, index) => (
-          <li key={index}>{/* <Link to={link.path}>{link.name}</Link> */}</li>
+          <li key={index}>
+            <Link to={link.path}>{link.name}</Link>
+          </li>
         ))}
       </ul>
     </header>

@@ -1,4 +1,11 @@
 import React from "react";
+import styled from "styled-components";
+
+const StyledImage = styled.img`
+  display: block;
+  margin: 30px 0;
+  width: 100%;
+`;
 
 const Image = ({ props = {} }) => {
   const imageURL = props.hasOwnProperty("imageURL") ? props.imageURL.value : "";
@@ -8,18 +15,7 @@ const Image = ({ props = {} }) => {
 
   const src = imageURL === "" ? defaultImage : imageURL;
 
-  return (
-    <div>
-      <img
-        style={{
-          width: "100%",
-          margin: "30px 0",
-          display: "block",
-        }}
-        src={src}
-      />
-    </div>
-  );
+  return <StyledImage src={src} />;
 };
 
 export default Image;

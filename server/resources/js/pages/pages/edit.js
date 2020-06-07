@@ -1,14 +1,16 @@
 // import Layout from "../../layout/layout";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Error from "../../components/error";
-import PageContent from "../../components/pageContent";
+// import PageContent from "../../components/pageContent";
 import SharedComponents, { schema } from "@components";
-// import Layout from "../../../../../shared_components/layout/page";
-// import Layout from "@layout/page";
+import { Link } from "react-router-dom";
 
 import Header from "../../layout/header";
-import EditPageSidebar from "../../components/editPageSidebar";
+import EditPageSidebar from "../../components/editPageSidebar/";
+
+import TemplateLayout from "@layout/page";
+// import SharedComponents from "@components";
+
+import PageContent from "../../components/pageContent";
 
 import { useToasts, ToastProvider } from "react-toast-notifications";
 const components = Object.keys(schema).map(key => schema[key]);
@@ -23,7 +25,11 @@ const EditLayout = ({
     updateProp,
     updatePage,
     deletePage,
-    setFocussedComponent
+    setFocussedComponent,
+    _setSelectedComponent,
+    addComponent,
+    addingComponent,
+    setAddingComponent
 }) => {
     return (
         <div className="editLayout">
@@ -31,7 +37,7 @@ const EditLayout = ({
 
             <main className="editLayout-main">
                 <div className="editLayout-page-container">
-                    <div className="editLayout-page">{children}</div>
+                    <>{children}</>
                 </div>
                 <EditPageSidebar
                     page={page}
@@ -43,6 +49,10 @@ const EditLayout = ({
                     updatePage={updatePage}
                     deletePage={deletePage}
                     setFocussedComponent={setFocussedComponent}
+                    _setSelectedComponent={_setSelectedComponent}
+                    addComponent={addComponent}
+                    addingComponent={addingComponent}
+                    setAddingComponent={setAddingComponent}
                 />
             </main>
         </div>
@@ -59,6 +69,8 @@ export default ({ match, history }) => {
     const [selectedComponent, setSelectedComponent] = useState(0);
 
     const [focussedComponent, setFocussedComponent] = useState(null);
+
+    const [addingComponent, setAddingComponent] = useState(false);
 
     const [page, setPage] = useState({
         name: "",
@@ -209,41 +221,25 @@ export default ({ match, history }) => {
             updatePage={updatePage}
             deletePage={deletePage}
             setFocussedComponent={setFocussedComponent}
+            _setSelectedComponent={_setSelectedComponent}
+            addComponent={addComponent}
+            addingComponent={addingComponent}
+            setAddingComponent={setAddingComponent}
         >
-            <PageContent
-                state={state}
-                setState={setState}
-                selectedComponent={selectedComponent}
-                setSelectedComponent={setSelectedComponent}
-                components={components}
-                focussedComponent={focussedComponent}
-                setFocussedComponent={setFocussedComponent}
-            />
-            <div className="form-group">
-                <label htmlFor="exampleFormControlSelect1">
-                    {" "}
-                    Select component{" "}
-                </label>{" "}
-                <select
-                    className="form-control"
-                    id="exampleFormControlSelect1"
-                    onChange={_setSelectedComponent}
-                >
-                    {" "}
-                    {components.map((component, index) => {
-                        return (
-                            <option key={index} value={index}>
-                                {" "}
-                                {component.name}{" "}
-                            </option>
-                        );
-                    })}{" "}
-                </select>{" "}
-            </div>
-            <button className="btn btn-secondary" onClick={addComponent}>
-                {" "}
-                Add Component{" "}
-            </button>{" "}
+            <TemplateLayout Link={Link}>
+                {/* <PageContent jsonContent={page.jsonContent} /> */}
+
+                <PageContent
+                    state={state}
+                    setState={setState}
+                    selectedComponent={selectedComponent}
+                    setSelectedComponent={setSelectedComponent}
+                    components={components}
+                    focussedComponent={focussedComponent}
+                    setFocussedComponent={setFocussedComponent}
+                    setAddingComponent={setAddingComponent}
+                />
+            </TemplateLayout>
         </EditLayout>
     );
 };

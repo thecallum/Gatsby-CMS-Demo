@@ -12,7 +12,8 @@ export default ({
     components,
     focussedComponent,
     setFocussedComponent,
-    savedLayout
+    savedLayout,
+    setAddingComponent
 }) => {
     const updateState = (index, key, value) => {
         setState(
@@ -68,6 +69,19 @@ export default ({
                         </div>
                     );
                 })}
+
+                <div>
+                    <button
+                        className="btn btn-primary"
+                        style={{
+                            display: "block",
+                            margin: "0 auto"
+                        }}
+                        onClick={() => setAddingComponent(true)}
+                    >
+                        Add Component
+                    </button>
+                </div>
             </OutsideClickHandler>
         </>
     );

@@ -35,9 +35,6 @@ export default TextInput;
 
 export const schema = {
   name: "TextInput",
-  // value: {
-  //   content: "Default value",
-  // },
   state: {
     content: "Default value",
   },
