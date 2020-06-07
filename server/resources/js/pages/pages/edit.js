@@ -29,7 +29,8 @@ const EditLayout = ({
     _setSelectedComponent,
     addComponent,
     addingComponent,
-    setAddingComponent
+    setAddingComponent,
+    deleteComponent
 }) => {
     return (
         <div className="editLayout">
@@ -53,6 +54,7 @@ const EditLayout = ({
                     addComponent={addComponent}
                     addingComponent={addingComponent}
                     setAddingComponent={setAddingComponent}
+                    deleteComponent={deleteComponent}
                 />
             </main>
         </div>
@@ -164,6 +166,17 @@ export default ({ match, history }) => {
         setSelectedComponent(e.target.value);
     };
 
+    const deleteComponent = index => {
+        if (!confirm("Are you sure you want to delete this component?")) return;
+
+        setFocussedComponent(null);
+        setState(
+            state.filter((component, componentIndex) => {
+                return index !== componentIndex;
+            })
+        );
+    };
+
     useEffect(() => {
         fetch("http://localhost:8000/api/page/" + id, {
             method: "GET",
@@ -225,6 +238,7 @@ export default ({ match, history }) => {
             addComponent={addComponent}
             addingComponent={addingComponent}
             setAddingComponent={setAddingComponent}
+            deleteComponent={deleteComponent}
         >
             <TemplateLayout Link={Link}>
                 {/* <PageContent jsonContent={page.jsonContent} /> */}

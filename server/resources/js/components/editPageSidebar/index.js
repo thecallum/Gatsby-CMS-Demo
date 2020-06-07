@@ -19,7 +19,8 @@ export default ({
     addComponent,
 
     addingComponent,
-    setAddingComponent
+    setAddingComponent,
+    deleteComponent
 }) => {
     const showComponentProperties = focussedComponent !== null;
 
@@ -39,6 +40,7 @@ export default ({
                             focussedComponent={focussedComponent}
                             updateProp={updateProp}
                             setFocussedComponent={setFocussedComponent}
+                            deleteComponent={deleteComponent}
                         />
                     ) : (
                         <SidebarPage

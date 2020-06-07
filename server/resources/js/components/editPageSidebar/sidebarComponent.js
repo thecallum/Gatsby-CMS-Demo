@@ -4,18 +4,27 @@ export default ({
     state,
     focussedComponent,
     updateProp,
-    setFocussedComponent
+    setFocussedComponent,
+    deleteComponent
 }) => {
     return (
         <>
             <h2>{state[focussedComponent].name}</h2>
 
-            <button
-                onClick={() => setFocussedComponent(null)}
-                className="btn btn-secondary"
-            >
-                Close
-            </button>
+            <div>
+                <button
+                    onClick={() => setFocussedComponent(null)}
+                    className="btn btn-secondary"
+                >
+                    Close
+                </button>
+                <button
+                    onClick={() => deleteComponent(focussedComponent)}
+                    className="btn btn-danger"
+                >
+                    Delete
+                </button>
+            </div>
 
             <hr />
             {state.length > 0 && (
