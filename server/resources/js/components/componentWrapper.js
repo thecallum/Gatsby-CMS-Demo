@@ -1,12 +1,16 @@
 import React from "react";
+import { connect } from "react-redux";
+import { updateState } from "../redux/actions/page";
 
-export default ({
+const ComponentWrapper = ({
     props,
     component: Component,
-    updateState,
+
     index,
     focussed = false,
-    state
+    state,
+
+    dispatch
 }) => {
     return (
         <div>
@@ -17,7 +21,9 @@ export default ({
             >
                 <Component
                     props={props}
-                    updateState={updateState}
+                    updateState={(componentIndex, key, value) => {
+                        dispatch.updateState(componentIndex, key, value);
+                    }}
                     index={index}
                     state={state}
                     editContent={focussed}
@@ -26,3 +32,26 @@ export default ({
         </div>
     );
 };
+
+const mapStateToProps = ({ page }) => ({
+    pageState: {
+        loading: page.loading,
+        error: page.error,
+        name: page.name,
+        slug: page.slug,
+        jsonContent: page.jsonContent,
+        id: page.id,
+        focussedComponent: page.focussedComponentId,
+        showComponentSidebar: page.showComponentSidebar
+    }
+});
+
+const mapDispatchToProps = dispatch => ({
+    dispatch: {
+        updateState: (componentIndex, key, value) => {
+            dispatch(updateState(componentIndex, key, value));
+        }
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ComponentWrapper);

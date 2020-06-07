@@ -1,259 +1,59 @@
-// import Layout from "../../layout/layout";
 import React, { useEffect, useState } from "react";
-// import PageContent from "../../components/pageContent";
 import SharedComponents, { schema } from "@components";
 import { Link } from "react-router-dom";
 
-import Header from "../../layout/header";
-import EditPageSidebar from "../../components/editPageSidebar/";
+import { connect } from "react-redux";
 
 import TemplateLayout from "@layout/page";
-// import SharedComponents from "@components";
 
 import PageContent from "../../components/pageContent";
 
 import { useToasts, ToastProvider } from "react-toast-notifications";
 const components = Object.keys(schema).map(key => schema[key]);
 
-const EditLayout = ({
-    children,
-    page,
-    errors,
-    inputChange,
-    focussedComponent,
-    state,
-    updateProp,
-    updatePage,
-    deletePage,
-    setFocussedComponent,
-    _setSelectedComponent,
-    addComponent,
-    addingComponent,
-    setAddingComponent,
-    deleteComponent
-}) => {
-    return (
-        <div className="editLayout">
-            <Header />
+import { loadNewPage, setFocussedComponent } from "../../redux/actions/page";
 
-            <main className="editLayout-main">
-                <div className="editLayout-page-container">
-                    <>{children}</>
-                </div>
-                <EditPageSidebar
-                    page={page}
-                    errors={errors}
-                    inputChange={inputChange}
-                    state={state}
-                    focussedComponent={focussedComponent}
-                    updateProp={updateProp}
-                    updatePage={updatePage}
-                    deletePage={deletePage}
-                    setFocussedComponent={setFocussedComponent}
-                    _setSelectedComponent={_setSelectedComponent}
-                    addComponent={addComponent}
-                    addingComponent={addingComponent}
-                    setAddingComponent={setAddingComponent}
-                    deleteComponent={deleteComponent}
-                />
-            </main>
-        </div>
-    );
-};
+import EditLayout from "../../components/editLayout";
 
-export default ({ match, history }) => {
+const Edit = ({ match, pageState, dispatch }) => {
     const id = match.params.id;
-
-    const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState({});
-
-    const [state, setState] = useState([]);
-    const [selectedComponent, setSelectedComponent] = useState(0);
-
-    const [focussedComponent, setFocussedComponent] = useState(null);
-
-    const [addingComponent, setAddingComponent] = useState(false);
-
-    const [page, setPage] = useState({
-        name: "",
-        slug: "",
-        jsonContent: []
-    });
     const { addToast } = useToasts();
 
-    const updateProp = (componentName, propKey, value) => {
-        setState(
-            state.map((component, componentIndex) => {
-                if (component.name === componentName) {
-                    return {
-                        ...component,
-                        props: {
-                            ...component.props,
-                            [propKey]: {
-                                ...component.props[propKey],
-                                value
-                            }
-                        }
-                    };
-                } else {
-                    return component;
-                }
-            })
-        );
-    };
-
-    const inputChange = e => {
-        setPage({
-            ...page,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    const updatePage = e => {
-        e.preventDefault();
-
-        if (loading) return;
-
-        setLoading(true);
-
-        fetch("http://localhost:8000/api/page/" + id, {
-            method: "PATCH",
-            body: JSON.stringify({
-                ...page,
-                jsonContent: JSON.stringify(state)
-            }),
-            headers: { "Content-Type": "application/json" }
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res.hasOwnProperty("errors")) {
-                    console.log(res.errors);
-                    setErrors(res.errors);
-
-                    addToast("Page could not be updated", {
-                        appearance: "error",
-                        autoDismiss: true
-                    });
-                } else {
-                    console.log({ res });
-                    // console.table(res, ["name", "slug", "content"]);
-                    setErrors({});
-                    setPage({
-                        ...res,
-                        PageContent: JSON.parse(res.jsonContent)
-                    });
-
-                    ////
-                    addToast("Page was updated", {
-                        appearance: "success",
-                        autoDismiss: true
-                    });
-                }
-            })
-            .catch(err => {
-                console.log({ err });
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
-
-    const addComponent = () => {
-        setState([...state, components[selectedComponent]]);
-    };
-
-    const _setSelectedComponent = e => {
-        setSelectedComponent(e.target.value);
-    };
-
-    const deleteComponent = index => {
-        if (!confirm("Are you sure you want to delete this component?")) return;
-
-        setFocussedComponent(null);
-        setState(
-            state.filter((component, componentIndex) => {
-                return index !== componentIndex;
-            })
-        );
-    };
-
     useEffect(() => {
-        fetch("http://localhost:8000/api/page/" + id, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
-        })
-            .then(res => res.json())
-            .then(res => {
-                const jsonContent =
-                    res.jsonContent === null ? [] : JSON.parse(res.jsonContent);
-
-                console.log("content", jsonContent);
-
-                setPage({
-                    name: res.name,
-                    slug: res.slug,
-                    jsonContent
-                });
-
-                setState(jsonContent);
-            });
+        dispatch.loadNewPage(id);
     }, []);
 
-    const deletePage = () => {
-        if (loading) return;
-
-        if (!confirm("are you sure you want to delete this page?")) return;
-
-        setLoading(true);
-
-        fetch("http://localhost:8000/api/page/" + id, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" }
-        })
-            .then(res => {
-                console.log({ res });
-
-                history.push("/pages/");
-            })
-            .catch(err => {
-                console.log({ err });
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
+    if (pageState.id === null) return <div></div>;
 
     return (
-        <EditLayout
-            page={page}
-            errors={errors}
-            inputChange={inputChange}
-            state={state}
-            focussedComponent={focussedComponent}
-            updateProp={updateProp}
-            updatePage={updatePage}
-            deletePage={deletePage}
-            setFocussedComponent={setFocussedComponent}
-            _setSelectedComponent={_setSelectedComponent}
-            addComponent={addComponent}
-            addingComponent={addingComponent}
-            setAddingComponent={setAddingComponent}
-            deleteComponent={deleteComponent}
-        >
+        <EditLayout>
             <TemplateLayout Link={Link}>
-                {/* <PageContent jsonContent={page.jsonContent} /> */}
-
-                <PageContent
-                    state={state}
-                    setState={setState}
-                    selectedComponent={selectedComponent}
-                    setSelectedComponent={setSelectedComponent}
-                    components={components}
-                    focussedComponent={focussedComponent}
-                    setFocussedComponent={setFocussedComponent}
-                    setAddingComponent={setAddingComponent}
-                />
+                <PageContent />
             </TemplateLayout>
         </EditLayout>
     );
 };
+
+const mapStateToProps = ({ page }) => ({
+    pageState: {
+        loading: page.loading,
+        error: page.error,
+        name: page.name,
+        slug: page.slug,
+        jsonContent: page.jsonContent,
+        id: page.id
+    }
+});
+
+const mapDispatchToProps = dispatch => ({
+    dispatch: {
+        loadNewPage: id => {
+            dispatch(loadNewPage(id));
+        },
+        setFocussedComponent: index => {
+            dispatch(setFocussedComponent(index));
+        }
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Edit);

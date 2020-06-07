@@ -1,58 +1,55 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import SidebarPage from "./sidebarPage";
 import SidebarComponent from "./sidebarComponent";
 import SidebarAddComponent from "./sidebarAddComponent";
 
-export default ({
-    page,
-    errors,
-    inputChange,
-    state,
-    focussedComponent,
-    updateProp,
-    updatePage,
-    deletePage,
-    setFocussedComponent,
-
+const EditPageSidebar = ({
     _setSelectedComponent,
-    addComponent,
 
-    addingComponent,
-    setAddingComponent,
-    deleteComponent
+    pageState
 }) => {
-    const showComponentProperties = focussedComponent !== null;
+    const showComponentProperties = pageState.focussedComponent !== null;
 
     return (
         <div className="editLayout-sidebar">
-            {addingComponent ? (
+            {pageState.showComponentSidebar ? (
                 <SidebarAddComponent
                     _setSelectedComponent={_setSelectedComponent}
-                    addComponent={addComponent}
-                    setAddingComponent={setAddingComponent}
                 />
             ) : (
                 <>
                     {showComponentProperties ? (
-                        <SidebarComponent
-                            state={state}
-                            focussedComponent={focussedComponent}
-                            updateProp={updateProp}
-                            setFocussedComponent={setFocussedComponent}
-                            deleteComponent={deleteComponent}
-                        />
+                        <SidebarComponent />
                     ) : (
-                        <SidebarPage
-                            page={page}
-                            updatePage={updatePage}
-                            deletePage={deletePage}
-                            errors={errors}
-                            inputChange={inputChange}
-                        />
+                        <SidebarPage />
                     )}
                 </>
             )}
         </div>
     );
 };
+
+const mapStateToProps = ({ page }) => ({
+    pageState: {
+        loading: page.loading,
+        error: page.error,
+        name: page.name,
+        slug: page.slug,
+        jsonContent: page.jsonContent,
+        id: page.id,
+        focussedComponent: page.focussedComponentId,
+        showComponentSidebar: page.showComponentSidebar
+    }
+});
+
+// const mapDispatchToProps = dispatch => ({
+//     dispatch: {
+//         showComponentSidebar: show => {
+//             dispatch(showComponentSidebar(show));
+//         }
+//     }
+// });
+
+export default connect(mapStateToProps)(EditPageSidebar);
