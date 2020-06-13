@@ -1,14 +1,17 @@
 import React from "react";
-import Error from "../../components/error";
+import { useToasts } from "react-toast-notifications";
+
 import {
     deletePage,
     updatePage,
     updateProperty
-} from "../../redux/actions/page";
+} from "../../../redux/actions/page";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 const SidebarPage = ({ pageState, dispatch, history }) => {
+    const { addToast } = useToasts();
+
     const deletePage = () => {
         if (!confirm("Are you sure you want to delete this page?")) return;
 
@@ -20,16 +23,22 @@ const SidebarPage = ({ pageState, dispatch, history }) => {
     };
 
     const updatePage = () => {
-        // dispatch.updatePage(pageState.id, pageState)
-
-        // alert("update page");
-
         dispatch.updatePage(
             pageState.id,
             pageState.properties,
             pageState.jsonContent,
-            () => {
-                alert("updated");
+            success => {
+                if (success) {
+                    addToast("Page was updated", {
+                        appearance: "success",
+                        autoDismiss: true
+                    });
+                } else {
+                    addToast("Page could not be updated", {
+                        appearance: "error",
+                        autoDismiss: true
+                    });
+                }
             }
         );
     };
@@ -82,8 +91,6 @@ const SidebarPage = ({ pageState, dispatch, history }) => {
 
 const mapStateToProps = ({ page }) => ({
     pageState: {
-        loading: page.loading,
-        error: page.error,
         properties: page.properties,
         jsonContent: page.jsonContent,
         id: page.id,

@@ -5,46 +5,29 @@ import { updateState } from "../redux/actions/page";
 const ComponentWrapper = ({
     props,
     component: Component,
-
     index,
     focussed = false,
     state,
-
     dispatch
 }) => {
+    const updateState = (componentIndex, key, value) => {
+        dispatch.updateState(componentIndex, key, value);
+    };
+
+    const outlineColor = focussed ? "2px solid mediumspringgreen" : "none";
+
     return (
-        <div>
-            <div
-                style={{
-                    outline: focussed ? "2px solid mediumspringgreen" : "none"
-                }}
-            >
-                <Component
-                    props={props}
-                    updateState={(componentIndex, key, value) => {
-                        dispatch.updateState(componentIndex, key, value);
-                    }}
-                    index={index}
-                    state={state}
-                    editContent={focussed}
-                />
-            </div>
+        <div style={{ outline: outlineColor }}>
+            <Component
+                props={props}
+                updateState={updateState}
+                index={index}
+                state={state}
+                editContent={focussed}
+            />
         </div>
     );
 };
-
-const mapStateToProps = ({ page }) => ({
-    pageState: {
-        loading: page.loading,
-        error: page.error,
-        name: page.name,
-        slug: page.slug,
-        jsonContent: page.jsonContent,
-        id: page.id,
-        focussedComponent: page.focussedComponentId,
-        showComponentSidebar: page.showComponentSidebar
-    }
-});
 
 const mapDispatchToProps = dispatch => ({
     dispatch: {
@@ -54,4 +37,4 @@ const mapDispatchToProps = dispatch => ({
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComponentWrapper);
+export default connect(null, mapDispatchToProps)(ComponentWrapper);

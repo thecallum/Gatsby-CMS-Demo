@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "./components/layout";
-
-import Components from "@components";
+import RenderContent from "../../gatsby/src/components/renderContent";
 
 export default ({ children, isServer = false, pageContext }) => {
   return (
@@ -9,15 +8,7 @@ export default ({ children, isServer = false, pageContext }) => {
       {isServer ? (
         <>{children}</>
       ) : (
-        <>
-          {pageContext.jsonContent.map((component, index) => {
-            const Component = Components[component.name];
-
-            return (
-              <Component props={component.props} state={component.state} />
-            );
-          })}
-        </>
+        <RenderContent jsonContent={pageContext.jsonContent} />
       )}
     </Layout>
   );

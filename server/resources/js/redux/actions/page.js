@@ -139,19 +139,18 @@ export const updatePage = (pageId, properties, jsonContent, cb) => {
                     console.log(res.errors);
                     // setErrors(res.errors);
 
-                    // addToast("Page could not be updated", {
-                    //     appearance: "error",
-                    //     autoDismiss: true
-                    // });
+                    cb(false);
                 } else {
                     console.log({ res });
-                    console.table(res, ["name", "slug", "content"]);
+                    // console.table(res, ["name", "slug", "content"]);
 
                     const jsonContent = JSON.parse(res.jsonContent);
 
                     dispatch(
                         updatePageSuccess(res.name, res.slug, jsonContent)
                     );
+
+                    cb(true);
 
                     // setErrors({});
                     // // setPage({
@@ -160,10 +159,6 @@ export const updatePage = (pageId, properties, jsonContent, cb) => {
                     // // });
 
                     // ////
-                    // addToast("Page was updated", {
-                    //     appearance: "success",
-                    //     autoDismiss: true
-                    // });
                 }
             })
             .catch(err => {
