@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import SharedComponents, { schema } from "@components";
+import React from "react";
+import SharedComponents from "@components";
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import {
@@ -10,67 +10,56 @@ import {
 import ComponentWrapper from "./componentWrapper";
 
 const PageContent = ({ pageState, dispatch }) => {
+    const handleClickOut = e => {
+        for (let i = 0; i < e.path.length; i++) {
+            if (e.path[i].className === "editLayout-sidebar") return;
+        }
+        dispatch.setFocussedComponent(null);
+    };
+
     return (
-        <>
-            <OutsideClickHandler
-                onOutsideClick={e => {
-                    for (let i = 0; i < e.path.length; i++) {
-                        if (e.path[i].className === "editLayout-sidebar")
-                            return;
-                    }
-                    dispatch.setFocussedComponent(null);
-                }}
-            >
-                {pageState.jsonContent.map((component, index) => {
-                    const isFocussed = pageState.focussedComponent == index;
-                    const componentState = component.hasOwnProperty("state")
-                        ? component.state
-                        : null;
-                    const Component = SharedComponents[component.name];
+        <OutsideClickHandler onOutsideClick={handleClickOut}>
+            {pageState.jsonContent.map((component, index) => {
+                const isFocussed = pageState.focussedComponent == index;
+                const componentState = component.hasOwnProperty("state")
+                    ? component.state
+                    : null;
+                const Component = SharedComponents[component.name];
 
-                    return (
-                        <div
-                            key={index}
-                            onClick={() => dispatch.setFocussedComponent(index)}
-                        >
-                            <ComponentWrapper
-                                props={component.props}
-                                component={Component}
-                                index={index}
-                                focussed={isFocussed}
-                                state={componentState}
-                            />
-                        </div>
-                    );
-                })}
-
-                <div>
-                    <button
-                        className="btn btn-primary"
-                        style={{
-                            display: "block",
-                            margin: "0 auto"
-                        }}
-                        onClick={() => dispatch.showComponentSidebar(true)}
+                return (
+                    <div
+                        key={index}
+                        onClick={() => dispatch.setFocussedComponent(index)}
                     >
-                        Add Component
-                    </button>
-                </div>
-            </OutsideClickHandler>
-        </>
+                        <ComponentWrapper
+                            props={component.props}
+                            component={Component}
+                            index={index}
+                            focussed={isFocussed}
+                            state={componentState}
+                        />
+                    </div>
+                );
+            })}
+
+            <button
+                className="btn btn-primary"
+                style={{
+                    display: "block",
+                    margin: "0 auto"
+                }}
+                onClick={() => dispatch.showComponentSidebar(true)}
+            >
+                Add Component
+            </button>
+        </OutsideClickHandler>
     );
 };
 
 const mapStateToProps = ({ page }) => ({
     pageState: {
-        loading: page.loading,
-        error: page.error,
-        name: page.name,
-        slug: page.slug,
         jsonContent: page.jsonContent,
-        id: page.id,
-        focussedComponent: page.focussedComponentId,
-        showComponentSidebar: page.showComponentSidebar
+        focussedComponent: page.focussedComponentId
     }
 });
 

@@ -1,15 +1,12 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
+import Layout from "@layout/page"
 
 const IndexPage = ({ data }) => {
-  // console.log({ data })
-
   const pages = data.allPage.nodes
 
-  console.table(pages)
-
   return (
-    <div>
+    <Layout>
       <h2>Pages</h2>
 
       <ul
@@ -19,7 +16,6 @@ const IndexPage = ({ data }) => {
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
           gridGap: 20,
-          // background: 'hsl(187, 90%, 90%)'
         }}
       >
         {pages.map(({ data }, index) => (
@@ -27,7 +23,6 @@ const IndexPage = ({ data }) => {
             style={{
               display: "block",
               margin: 0,
-              // background: 'hsl(187, 50%, 90%)',
               padding: 5,
             }}
           >
@@ -35,7 +30,7 @@ const IndexPage = ({ data }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </Layout>
   )
 }
 

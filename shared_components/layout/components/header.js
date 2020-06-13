@@ -34,21 +34,19 @@ const Header = styled.header`
 const IS_SERVER = ENVIRONMENT.IS_SERVER;
 const { Link } = require(IS_SERVER ? "./fakeLink" : "gatsby");
 
-export default () => {
-  const links = [
-    { name: "Home", path: "/" },
-    { name: "Pages", path: "#" },
-  ];
+const links = [
+  { name: "Home", path: "/" },
+  { name: "Pages", path: "#" },
+];
 
-  return (
-    <Header>
-      <ul>
-        {links.map((link, index) => (
-          <li key={index}>
-            <Link to={link.path}>{link.name}</Link>
-          </li>
-        ))}
-      </ul>
-    </Header>
-  );
-};
+export default () => (
+  <Header>
+    <ul>
+      {links.map((link, index) => (
+        <li key={index}>
+          <Link to={link.path}>{link.name}</Link>
+        </li>
+      ))}
+    </ul>
+  </Header>
+);

@@ -2,31 +2,27 @@ import React, { useState } from "react";
 import SharedComponents, { schema } from "@components";
 import { connect } from "react-redux";
 
-import { showComponentSidebar, addComponent } from "../../redux/actions/page";
+import { showComponentSidebar, addComponent } from "../../../redux/actions/page";
 
-const SidebarAddComponent = ({ pageState, dispatch }) => {
+const SidebarAddComponent = ({ dispatch }) => {
+    const [selectedComponent, setSelectedComponent] = useState(
+        Object.keys(schema)[0]
+    );
+
     const addComponent = () => {
-        // addComponent();
         dispatch.addComponent(selectedComponent);
         dispatch.showComponentSidebar(false);
     };
 
-    const [selectedComponent, setSelectedComponent] = useState(
-        Object.keys(schema)[0]
-    );
+    const closeSidebar = () => {
+        dispatch.showComponentSidebar(false);
+    };
 
     return (
         <div>
             <h2>Add Component</h2>
 
-            {/* <p>SelectedComponent: {selectedComponent}</p>
-
-            <pre>{JSON.stringify(schema[selectedComponent], null, 2)}</pre> */}
-
-            <button
-                className="btn btn-secondary"
-                onClick={() => dispatch.showComponentSidebar(false)}
-            >
+            <button className="btn btn-secondary" onClick={closeSidebar}>
                 Close
             </button>
 
@@ -56,19 +52,6 @@ const SidebarAddComponent = ({ pageState, dispatch }) => {
     );
 };
 
-const mapStateToProps = ({ page }) => ({
-    pageState: {
-        loading: page.loading,
-        error: page.error,
-        name: page.name,
-        slug: page.slug,
-        jsonContent: page.jsonContent,
-        id: page.id,
-        focussedComponent: page.focussedComponentId,
-        showComponentSidebar: page.showComponentSidebar
-    }
-});
-
 const mapDispatchToProps = dispatch => ({
     dispatch: {
         showComponentSidebar: show => {
@@ -80,7 +63,4 @@ const mapDispatchToProps = dispatch => ({
     }
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(SidebarAddComponent);
+export default connect(null, mapDispatchToProps)(SidebarAddComponent);

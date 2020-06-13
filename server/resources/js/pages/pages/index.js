@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Layout from "../../layout/main/";
 
 export default () => {
     useEffect(() => {
@@ -12,7 +13,7 @@ export default () => {
             .then(res => res.json())
             .then(res => {
                 console.log({ res });
-                console.table(res, ["name", "slug"]);
+                // console.table(res, ["name", "slug"]);
 
                 setPages(res);
             });
@@ -21,7 +22,7 @@ export default () => {
     const [pages, setPages] = useState([]);
 
     return (
-        <div>
+        <Layout>
             <h1>Pages</h1>
 
             <Link
@@ -53,6 +54,6 @@ export default () => {
                     ))}
                 </tbody>
             </table>
-        </div>
+        </Layout>
     );
 };

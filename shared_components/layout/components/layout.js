@@ -1,12 +1,10 @@
 import React from "react";
 import Header from "./header";
-// import "../scss/main.scss"
-
 import styled from "styled-components";
 
 const Layout = styled.div`
   min-height: 100vh;
-  padding: 30px;
+  // padding: 30px;
   width: 100%;
 
   .layout-main {
@@ -20,19 +18,17 @@ const Layout = styled.div`
 `;
 
 export default ({ children, hideHeader }) => {
-  // import Header from "./header";
-
-  console.log("layout", { hideHeader });
-
   return (
-    <Layout>
+    <Layout
+      style={{
+        padding: hideHeader ? "30px" : 0,
+      }}
+    >
       {hideHeader !== true && <Header />}
 
-      <>
-        <main className="layout-main">
-          <>{children}</>
-        </main>
-      </>
+      <main className="layout-main">
+        <>{children}</>
+      </main>
     </Layout>
   );
 };
