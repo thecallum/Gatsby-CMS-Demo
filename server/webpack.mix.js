@@ -27,6 +27,14 @@ mix.alias({
 
 // global.yeet = "yeet"
 
+mix.webpackConfig({
+    externals: {
+        ENVIRONMENT: `{
+            IS_SERVER: true
+          }`
+    }
+});
+
 mix.react("resources/js/app.js", "public/js").sass(
     "resources/sass/app.scss",
     "public/css"

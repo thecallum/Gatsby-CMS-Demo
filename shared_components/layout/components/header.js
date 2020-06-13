@@ -1,13 +1,47 @@
 import React from "react";
 
-export default ({ Link }) => {
+import ENVIRONMENT from "ENVIRONMENT";
+
+import styled from "styled-components";
+
+const Header = styled.header`
+  background: hsl(0, 50%, 50%);
+  height: 60px;
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    align-items: center;
+  }
+
+  li {
+    display: block;
+    margin: 0 0 0 15px;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+`;
+
+const IS_SERVER = ENVIRONMENT.IS_SERVER;
+const { Link } = require(IS_SERVER ? "./fakeLink" : "gatsby");
+
+export default () => {
   const links = [
     { name: "Home", path: "/" },
     { name: "Pages", path: "#" },
   ];
 
   return (
-    <header className="header">
+    <Header>
       <ul>
         {links.map((link, index) => (
           <li key={index}>
@@ -15,6 +49,6 @@ export default ({ Link }) => {
           </li>
         ))}
       </ul>
-    </header>
+    </Header>
   );
 };

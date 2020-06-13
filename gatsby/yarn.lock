@@ -5840,6 +5840,11 @@ gatsby-plugin-typescript@^2.4.2:
     "@babel/runtime" "^7.9.6"
     babel-plugin-remove-graphql-queries "^2.9.1"
 
+gatsby-plugin-webpack-entry@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-webpack-entry/-/gatsby-plugin-webpack-entry-1.0.1.tgz#ebf1e6a69a7d4c274a9e093ff5f01096519ccca9"
+  integrity sha512-B24dHdWfz638y7wxQRpeVE26+5xnTCJrH2YzTyULwMTIIUX9/V0wVBM+FAhKGoO0HCoBCOl7gAGQndZBsVLoeg==
+
 gatsby-react-router-scroll@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/gatsby-react-router-scroll/-/gatsby-react-router-scroll-3.0.0.tgz#ad2afdfa6052d9e1b5add053fec1b545fc369474"

@@ -27,7 +27,7 @@ const Edit = ({ match, pageState, dispatch }) => {
 
     return (
         <EditLayout>
-            <TemplateLayout Link={Link}>
+            <TemplateLayout Link={Link} isServer={true}>
                 <PageContent />
             </TemplateLayout>
         </EditLayout>

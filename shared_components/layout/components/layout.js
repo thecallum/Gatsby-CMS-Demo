@@ -17,41 +17,22 @@ const Layout = styled.div`
     min-height: calc(100vh - 60px);
     background: #fff;
   }
-
-  // .header {
-  //   background: hsl(0, 50%, 50%);
-  //   height: 60px;
-
-  //   ul {
-  //     display: flex;
-  //     margin: 0;
-  //     padding: 0;
-  //     height: 100%;
-  //     align-items: center;
-  //   }
-
-  //   li {
-  //     display: block;
-  //     margin: 0 0 0 15px;
-
-  //     a {
-  //       color: #fff;
-  //       text-decoration: none;
-
-  //       &:hover {
-  //         text-decoration: underline;
-  //       }
-  //     }
-  //   }
-  // }
 `;
 
-export default ({ children, hideHeader, Link }) => (
-  <Layout>
-    {hideHeader !== true && <Header Link={Link} />}
+export default ({ children, hideHeader }) => {
+  // import Header from "./header";
 
-    <main className="layout-main">
-      <>{children}</>
-    </main>
-  </Layout>
-);
+  console.log("layout", { hideHeader });
+
+  return (
+    <Layout>
+      {hideHeader !== true && <Header />}
+
+      <>
+        <main className="layout-main">
+          <>{children}</>
+        </main>
+      </>
+    </Layout>
+  );
+};

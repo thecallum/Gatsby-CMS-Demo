@@ -16,6 +16,7 @@
     "gatsby-plugin-react-helmet": "^3.3.1",
     "gatsby-plugin-sass": "^2.3.3",
     "gatsby-plugin-sharp": "^2.6.4",
+    "gatsby-plugin-webpack-entry": "^1.0.1",
     "gatsby-source-filesystem": "^2.3.4",
     "gatsby-transformer-sharp": "^2.5.2",
     "markdown-to-jsx": "^6.11.4",

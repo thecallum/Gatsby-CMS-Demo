@@ -1,12 +1,24 @@
 import React from "react";
-import styled from "styled-components";
-
 import Layout from "./components/layout";
 
-export default ({ children, isServer = true }) => {
+import Components from "@components";
+
+export default ({ children, isServer = false, pageContext }) => {
   return (
     <Layout hideHeader={isServer}>
-      <>{children}</>
+      {isServer ? (
+        <>{children}</>
+      ) : (
+        <>
+          {pageContext.jsonContent.map((component, index) => {
+            const Component = Components[component.name];
+
+            return (
+              <Component props={component.props} state={component.state} />
+            );
+          })}
+        </>
+      )}
     </Layout>
   );
 };
