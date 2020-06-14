@@ -1,17 +1,4 @@
 const path = require("path")
-// import { Link } from "gatsby"
-
-// console.log("ENV", process.env.CMS_URL)
-
-exports.onCreateWebpackConfig = ({ actions }) => {
-  actions.setWebpackConfig({
-    externals: {
-      ENVIRONMENT: `{
-        IS_SERVER: false
-      }`,
-    },
-  })
-}
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
@@ -32,8 +19,6 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
-
-  // console.log({ result })
 
   result.data.allPage.edges.forEach(item => {
     const page = item.node.data

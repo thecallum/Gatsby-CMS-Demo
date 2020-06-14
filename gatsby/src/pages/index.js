@@ -1,9 +1,9 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-import Layout from "@layout/page"
+import Layout from "@layout/components/layout"
 
 const IndexPage = ({ data }) => {
-  const pages = data.allPage.nodes
+  const pages = data.allPage.nodes.map(page => page.data)
 
   return (
     <Layout>
@@ -18,15 +18,16 @@ const IndexPage = ({ data }) => {
           gridGap: 20,
         }}
       >
-        {pages.map(({ data }, index) => (
+        {pages.map(({ slug, name }, index) => (
           <li
             style={{
               display: "block",
               margin: 0,
               padding: 5,
             }}
+            key={index}
           >
-            <Link to={`/pages/${data.slug}`}>{data.name}</Link>
+            <Link to={`/pages/${slug}`}>{name}</Link>
           </li>
         ))}
       </ul>

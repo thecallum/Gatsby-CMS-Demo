@@ -1,8 +1,7 @@
 import React from "react";
+import styled from "styled-components";
 
 import ENVIRONMENT from "ENVIRONMENT";
-
-import styled from "styled-components";
 
 const Header = styled.header`
   background: hsl(0, 50%, 50%);
@@ -32,6 +31,7 @@ const Header = styled.header`
 `;
 
 const IS_SERVER = ENVIRONMENT.IS_SERVER;
+
 const { Link } = require(IS_SERVER ? "./fakeLink" : "gatsby");
 
 const links = [

@@ -50,8 +50,8 @@ module.exports = {
             __dirname,
             "../shared_components/components/"
           ),
-
           "@layout": path.resolve(__dirname, "../shared_components/layout/"),
+          ENVIRONMENT: path.resolve(__dirname, "./environment.js"),
         },
         extensions: [],
       },
